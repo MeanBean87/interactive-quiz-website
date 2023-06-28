@@ -13,7 +13,36 @@
 </head>
 
 <body>
-
+   <div class="container">
+        <div id="home">
+            <div class="header">
+                <h1>WebDev Interactive Quiz</h1>
+            </div>
+            <div class="main">
+                <h2>Test your knowledge in <br> Web Development</h2>
+                <button class="btn" onclick="startQuiz()">Start Quiz</button>
+            </div>
+        </div>
+   </div>
+    <div class="container">
+        <div id="quiz" class="hide">
+            <div class="header">
+                <h1>WebDev Interactive Quiz</h1>
+            </div>
+            <div class="main">
+                <div id="question" class="question"></div>
+                <div id="qImg" class="qImg"></div>
+                <div class="options">
+                    <div id="btn0" class="btn" onclick="checkAnswer(0)"></div>
+                    <div id="btn1" class="btn" onclick="checkAnswer(1)"></div>
+                    <div id="btn2" class="btn" onclick="checkAnswer(2)"></div>
+                    <div id="btn3" class="btn" onclick="checkAnswer(3)"></div>
+                </div>
+                <div class="footer">
+                    <div id="progress" class="progress"></div>
+                </div>
+            </div>
+        </div>
     <script src="script.js" async defer></script>
 </body>
 
