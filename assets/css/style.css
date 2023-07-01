@@ -68,11 +68,13 @@ header {
   padding: 0 20px;
   font-family: var(--consolas);
   font-size: 16px;
+  margin-bottom: 10px;
   min-height: 70px;
   max-width: 100vw;
+  border-bottom: 2px solid var(--color-border-dark);
 }
 
-.headerBtnStart {
+.header-button-start {
   border: 2px dashed var(--color-success-light);
   background-color: var(--color-background-dark);
   font-family: var(--consolas);
@@ -83,7 +85,7 @@ header {
   transition: 0.3s ease;
 }
 
-.headerBtnReset {
+.header-button-reset {
   border: 2px dashed var(--color-error);
   background-color: var(--color-background-dark);
   font-family: var(--consolas);
@@ -94,7 +96,7 @@ header {
   transition: 0.3s ease;
 }
 
-.headerBtnScore {
+.header-button-score {
   border: 2px dashed var(--color-warning);
   background-color: var(--color-background-dark);
   font-family: var(--consolas);
@@ -106,63 +108,63 @@ header {
 }
 
 @media (hover: hover) {
-  .headerBtnStart:hover {
+  .header-button-start:hover {
     background-color: var(--color-background-light);
     color: var(--color-success);
     border: 2px solid var(--color-success);
-    width: 110px;
-    height: 40px;
+    width: 100px;
+    height: 30px;
     cursor: pointer;
   }
 
-  .headerBtnReset:hover {
+  .header-button-reset:hover {
     background-color: var(--color-background-light);
     border: 2px solid var(--color-error);
     color: var(--color-error);
-    width: 110px;
-    height: 40px;
+    width: 100px;
+    height: 30px;
     cursor: pointer;
   }
 
-  .headerBtnScore:hover {
+  .header-button-score:hover {
     background-color: var(--color-background-light);
     border: 2px solid var(--color-warning);
     color: var(--color-warning);
-    width: 110px;
-    height: 40px;
+    width: 100px;
+    height: 30px;
     cursor: pointer;
   }
 }
 
 @media (hover: none) {
-  .headerBtnStart:active {
+  .header-button-start:active {
     background-color: var(--color-background-light);
     color: var(--color-success);
     border: 2px solid var(--color-success);
-    width: 110px;
-    height: 40px;
+    width: 100px;
+    height: 30px;
     cursor: pointer;
   }
 
-  .headerBtnReset:active {
+  .header-button-reset:active {
     background-color: var(--color-background-light);
     border: 2px solid var(--color-error);
     color: var(--color-error);
-    width: 110px;
-    height: 40px;
+    width: 100px;
+    height: 30px;
     cursor: pointer;
   }
 
-  .headerBtnScore:active {
+  .header-button-score:active {
     background-color: var(--color-background-light);
     border: 2px solid var(--color-warning);
     color: var(--color-warning);
-    width: 110px;
-    height: 40px;
+    width: 100px;
+    height: 30px;
     cursor: pointer;
   }
 }
-
+/* Main Styles */
 main {
   display: flex;
   flex-direction: column;
@@ -171,6 +173,102 @@ main {
   flex-grow: 1;
   color: var(--color-text-dark);
   font-family: var(--consolas);
+}
+
+/* Quiz Container Styles */
+.quiz-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: var(--color-background-dark);
+  color: var(--color-text-dark);
+  font-family: var(--consolas);
+  font-size: 16px;
+  padding: 10px;
+  border: 2px solid var(--color-border-dark);
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 999px; 
+  margin: 0px 10px;
+}
+
+#question-text,
+#timer-value {
+  margin: 0;
+  text-align: center;
+}
+
+#answer-form {
+  flex-grow: 1;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+
+.answer-button-container {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.answer-button-container Label {
+  flex-grow: 1;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.answer-button-container:hover {
+  background-color: var(--color-background-light);
+  border: 2px solid var(--color-border-light);
+}
+
+.selected {
+  background-color: var(--color-success);
+  border: 2px solid var(--color-border-light);
+  color: black
+}
+
+@media (hover: hover) {
+  .submit-button:hover {
+    background-color: var(--color-background-light);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    scale: 1.1;
+    cursor: pointer;
+  }
+
+}
+
+@media (hover: none) {
+  .submit-button:active {
+    background-color: var(--color-background-light);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    scale: 1.1;
+    cursor: pointer;
+  }
+
+}
+
+.submit-button-container {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.submit-button {
+  border: 2px dashed var(--color-primary);
+  background-color: var(--color-background-dark);
+  font-family: var(--consolas);
+  color: var(--color-primary);
+  font-size: 12px;
+  width: 100px;
+  height: 30px;
+  transition: 0.3s ease;
 }
 
 /* Footer Styles */
@@ -184,7 +282,9 @@ footer {
   font-family: var(--consolas);
   font-size: 16px;
   width: 100vw;
-  margin-top: auto;
+  margin-top: 10px;
+  padding: 10px 0px;
+  border-top: 2px solid var(--color-border-dark);
 }
 
 footer a {
@@ -206,5 +306,6 @@ footer a {
 
   ul {
     padding: 0;
+    margin: 10px 0;
   }
 }
