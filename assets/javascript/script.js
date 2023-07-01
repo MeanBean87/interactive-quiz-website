@@ -21,9 +21,11 @@ let isAnswerTwo = false;
 let isAnswerThree = false;
 let isAnswerFour = false;
 let selectedAnswer = 0;
-
+let questions = JSON.parse(localStorage.getItem("questions"));
 // Functions
 const startQuiz = () => {
+  getQuestion(questionIndex);
+  timer(remainingTime);
   console.log("Quiz started");
 };
 
@@ -99,30 +101,48 @@ const checkAnswer = (selectedAnswer, remainingTime) => {
 };
 
 const timer = (remainingTime) => {
-    timerInterval = setInterval(function () {
-        remainingTime--;
-        const formattedTime = timeConverter(remainingTime);
-        timerValue.textContent = `Time Left: ${formattedTime}`;
-        if (remainingTime === 0) {
-        clearInterval(timerInterval);
-        console.log("Time is up");
-        }
-    }, 1000);
+  timerInterval = setInterval(function () {
+    remainingTime--;
+    const formattedTime = timeConverter(remainingTime);
+    timerValue.textContent = `Time Left: ${formattedTime}`;
+    if (remainingTime === 0) {
+      clearInterval(timerInterval);
+    }
+  }, 1000);
 };
 
 const timeConverter = (time) => {
-    let minutes = Math.floor(time / 60);
-    let seconds = time - (minutes * 60);
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    return `${minutes}:${seconds}`;
+  let minutes = Math.floor(time / 60);
+  let seconds = time - minutes * 60;
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+  return `${minutes}:${seconds}`;
 };
 
-// need endQuiz function
+const endQuiz = () => {
+  console.log("Quiz ended");
+  clearInterval(timerInterval);
+};
+
+const fetchData = () => {
+  fetch("./assets/javascript/data.json")
+    .then((response) => response.json())
+    .then((questions) => {
+      localStorage.setItem("questions", JSON.stringify(questions));
+      console.log("Questions stored in local storage");
+    })
+    .catch((error) => {
+      console.error("Error fetching questions:", error);
+    });
+};
 
 const giveQuestion = (questionIndex) => {
-
+  questionText.textContent = questions[questionIndex].question;
+  answerOneBtn.textContent = questions[questionIndex].answerOne;
+  answerTwoBtn.textContent = questions[questionIndex].answerTwo;
+  answerThreeBtn.textContent = questions[questionIndex].answerThree;
+  answerFourBtn.textContent = questions[questionIndex].answerFour;
 };
 
 // Event Listeners
@@ -136,3 +156,5 @@ answerFourBtn.addEventListener("click", answerFour);
 submitBtn.addEventListener("click", submitAnswer);
 
 timer(remainingTime);
+fetchData();
+console.log(questions);
