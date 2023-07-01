@@ -1,0 +1,328 @@
+{
+  "highScores": [{
+    "name": "John",
+    "score": 100
+  }],
+  "questions": [
+    {
+      "question": "What is the capital city of JavaScript?",
+      "options": [
+        "New York",
+        "London",
+        "Paris",
+        "None of the above"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "Which keyword is used to declare a variable in JavaScript?",
+      "options": [
+        "var",
+        "let",
+        "const",
+        "All of the above"
+      ],
+      "answer": 3
+    },
+    {
+      "question": "What is the result of the expression '2' + 2 in JavaScript?",
+      "options": [
+        "4",
+        "22",
+        "NaN",
+        "None of the above"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Which method is used to remove the last element from an array in JavaScript?",
+      "options": [
+        "pop()",
+        "shift()",
+        "push()",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the correct way to write a JavaScript array?",
+      "options": [
+        "var colors = [1:'red', 2:'blue', 3:'green']",
+        "var colors = ['red', 'blue', 'green']",
+        "var colors = 'red', 'blue', 'green'",
+        "var colors = {'red', 'blue', 'green'}"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Which operator is used to concatenate strings in JavaScript?",
+      "options": [
+        "+",
+        "-",
+        "*",
+        "/"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the result of the expression 4 + '4' in JavaScript?",
+      "options": [
+        "8",
+        "44",
+        "NaN",
+        "None of the above"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Which function is used to parse a string and return an integer in JavaScript?",
+      "options": [
+        "parseInt()",
+        "parseFloat()",
+        "toInteger()",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Which method is used to remove the first element from an array in JavaScript?",
+      "options": [
+        "shift()",
+        "pop()",
+        "push()",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the correct way to write a JavaScript comment?",
+      "options": [
+        "// This is a comment",
+        "' This is a comment",
+        "/* This is a comment */",
+        "All of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Which keyword is used to declare a function in JavaScript?",
+      "options": [
+        "var",
+        "let",
+        "function",
+        "All of the above"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "What is the result of the expression 10 % 3 in JavaScript?",
+      "options": [
+        "3",
+        "1",
+        "0",
+        "None of the above"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "What is the correct way to access the length of an array in JavaScript?",
+      "options": [
+        "array.length()",
+        "array.length",
+        "array.length{}",
+        "array.length[]"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Which method is used to add elements to the end of an array in JavaScript?",
+      "options": [
+        "push()",
+        "unshift()",
+        "pop()",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the correct way to write a JavaScript if statement?",
+      "options": [
+        "if (x == 5) {",
+        "if x = 5 {",
+        "if x == 5",
+        "All of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Which method is used to join two or more strings in JavaScript?",
+      "options": [
+        "concat()",
+        "join()",
+        "merge()",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the correct way to write a JavaScript for loop?",
+      "options": [
+        "for (i = 0; i < 5)",
+        "for (i = 0; i < 5; i++)",
+        "for i = 0 to 5",
+        "All of the above"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Which operator is used to compare two values for equality in JavaScript?",
+      "options": [
+        "==",
+        "===",
+        "!=",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the result of the expression '5' == 5 in JavaScript?",
+      "options": [
+        "true",
+        "false",
+        "NaN",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Which method is used to remove the last element from a string in JavaScript?",
+      "options": [
+        "slice()",
+        "pop()",
+        "push()",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the correct way to write a JavaScript switch statement?",
+      "options": [
+        "switch (x) {",
+        "switch x {",
+        "case x:",
+        "All of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Which method is used to convert a string to uppercase in JavaScript?",
+      "options": [
+        "toUpperCase()",
+        "toLowerCase()",
+        "trim()",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the correct way to write a JavaScript while loop?",
+      "options": [
+        "while (x < 5)",
+        "while x < 5",
+        "while (x = 5)",
+        "All of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Which operator is used to perform exponentiation in JavaScript?",
+      "options": [
+        "**",
+        "^",
+        "^^",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the result of the expression 5 / 0 in JavaScript?",
+      "options": [
+        "0",
+        "Infinity",
+        "NaN",
+        "None of the above"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Which method is used to convert a string to an array in JavaScript?",
+      "options": [
+        "split()",
+        "join()",
+        "concat()",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the correct way to write a JavaScript do-while loop?",
+      "options": [
+        "do (x < 5) {",
+        "do x < 5;",
+        "do {",
+        "All of the above"
+      ],
+      "answer": 2
+    },
+    {
+      "question": "Which operator is used to perform logical AND in JavaScript?",
+      "options": [
+        "&&",
+        "||",
+        "!",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the result of the expression NaN === NaN in JavaScript?",
+      "options": [
+        "true",
+        "false",
+        "NaN",
+        "None of the above"
+      ],
+      "answer": 1
+    },
+    {
+      "question": "Which method is used to convert a string to a floating-point number in JavaScript?",
+      "options": [
+        "parseFloat()",
+        "parseInt()",
+        "toFixed()",
+        "None of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "What is the correct way to write a JavaScript ternary operator?",
+      "options": [
+        "x ? a : b",
+        "x = a ? b",
+        "x ? a : b : c",
+        "All of the above"
+      ],
+      "answer": 0
+    },
+    {
+      "question": "Which operator is used to perform logical OR in JavaScript?",
+      "options": [
+        "||",
+        "&&",
+        "!",
+        "None of the above"
+      ],
+      "answer": 0
+    }
+  ]
+}

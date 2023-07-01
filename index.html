@@ -4,46 +4,33 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>WebDev Interactive Quiz</title>
+    <title>JavaScript Interactive Quiz</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./assets/reset.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="icon" href="./assets/images/favicon.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@600&display=swap" rel="stylesheet">
 </head>
 
 <body>
-   <div class="container">
-        <div id="home">
-            <div class="header">
-                <h1>WebDev Interactive Quiz</h1>
-            </div>
-            <div class="main">
-                <h2>Test your knowledge in <br> Web Development</h2>
-                <button class="btn" onclick="startQuiz()">Start Quiz</button>
-            </div>
-        </div>
-   </div>
-    <div class="container">
-        <div id="quiz" class="hide">
-            <div class="header">
-                <h1>WebDev Interactive Quiz</h1>
-            </div>
-            <div class="main">
-                <div id="question" class="question"></div>
-                <div id="qImg" class="qImg"></div>
-                <div class="options">
-                    <div id="btn0" class="btn" onclick="checkAnswer(0)"></div>
-                    <div id="btn1" class="btn" onclick="checkAnswer(1)"></div>
-                    <div id="btn2" class="btn" onclick="checkAnswer(2)"></div>
-                    <div id="btn3" class="btn" onclick="checkAnswer(3)"></div>
-                </div>
-                <div class="footer">
-                    <div id="progress" class="progress"></div>
-                </div>
-            </div>
-        </div>
-    <script src="script.js" async defer></script>
+    <header>
+        <h1>JavaScript Interactive Quiz</h1>
+        <ul>
+            <button class="headerBtnStart">Start</button>
+            <button class="headerBtnReset">Reset</button>
+            <button class="headerBtnScore">High Scores</button>
+        </ul>
+    </header>
+    <main>
+        <h2>Hit Start to Begin!!!</h2>
+    </main>
+    <script src="./assets/javascript/script.js" async defer></script>
 </body>
+<footer>
+    <h4> Created by <a href="https://github.com/MeanBean87" target="_blank">MeanBean87</a></h4>
+</footer>
 
 </html>
