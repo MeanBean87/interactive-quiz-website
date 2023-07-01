@@ -13,7 +13,8 @@ const submitBtn = document.querySelector(".submit-button");
 // Global Variables
 let correct = 0;
 let incorrect = 0;
-let remainingTime = 0;
+let remainingTime = 120;
+let timerInterval;
 let questionIndex = 0;
 let isAnswerOne = false;
 let isAnswerTwo = false;
@@ -97,8 +98,31 @@ const checkAnswer = (selectedAnswer, remainingTime) => {
   }
 };
 
+const timer = (remainingTime) => {
+    timerInterval = setInterval(function () {
+        remainingTime--;
+        const formattedTime = timeConverter(remainingTime);
+        timerValue.textContent = `Time Left: ${formattedTime}`;
+        if (remainingTime === 0) {
+        clearInterval(timerInterval);
+        console.log("Time is up");
+        }
+    }, 1000);
+};
+
+const timeConverter = (time) => {
+    let minutes = Math.floor(time / 60);
+    let seconds = time - (minutes * 60);
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    return `${minutes}:${seconds}`;
+};
+
+// need endQuiz function
+
 const giveQuestion = (questionIndex) => {
-    
+
 };
 
 // Event Listeners
@@ -110,3 +134,5 @@ answerTwoBtn.addEventListener("click", answerTwo);
 answerThreeBtn.addEventListener("click", answerThree);
 answerFourBtn.addEventListener("click", answerFour);
 submitBtn.addEventListener("click", submitAnswer);
+
+timer(remainingTime);
