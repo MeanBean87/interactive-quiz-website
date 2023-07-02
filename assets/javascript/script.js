@@ -224,7 +224,7 @@ submitBtn.addEventListener("click", submitAnswer);
 console.log("DataIndex: " + data.questionsObj.length);
 console.log("Qindex: " + questionIndex);
 
-fetchData();
+//fetchData();
 //
 //MeanBean87/interactive-quiz-website/assets/javascript/data.json
 //https://raw.githubusercontent.com/MeanBean87/interactive-quiz-website/f7dddcd0d2058acdaf99e8661a23fabcd811e2c7/assets/javascript/data.json
