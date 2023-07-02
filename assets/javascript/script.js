@@ -13,6 +13,8 @@ const answerThreeBtnLabel = document.querySelector(".answer-three-label");
 const answerFourBtn = document.querySelector("#answer-four");
 const answerFourBtnLabel = document.querySelector(".answer-four-label");
 const submitBtn = document.querySelector(".submit-button");
+const quizContainer = document.querySelector(".quiz-container");
+const welcomeText = document.querySelector(".welcome-text");
 
 // Global Variables
 let correct = 0;
@@ -30,9 +32,15 @@ let quizRunning = false;
 
 // Functions
 const startQuiz = async () => {
+  resetButton.addEventListener("click", resetQuiz);
+  if (quizRunning) {
+    return;
+  }
+  startButton.setAttribute("style", "display: none;");
+  clearInterval(timerInterval);
   console.log("Quiz started");
-  questionIndex = 0;
-  fetchData();
+  welcomeText.innerHTML = "";
+  quizContainer.setAttribute("style", "display: flex;");
   timer();
   quizRunning = true;
 
@@ -63,7 +71,27 @@ const startQuiz = async () => {
 };
 
 const resetQuiz = () => {
+  resetButton.removeEventListener("click", resetQuiz);
+  answerOneBtn.removeEventListener("click", answerOne);
+  answerTwoBtn.removeEventListener("click", answerTwo);
+  answerThreeBtn.removeEventListener("click", answerThree);
+  answerFourBtn.removeEventListener("click", answerFour);
+  submitBtn.removeEventListener("click", submitAnswer);
+  startButton.setAttribute("style", "display: inline-block;");
+  welcomeText.innerHTML = "Welcome to the Quiz!";
+  quizContainer.setAttribute("style", "display: none;");
+  clearInterval(timerInterval);
   console.log("Quiz reset");
+  correct = 0;
+  incorrect = 0;
+  remainingTime = 120;
+  questionIndex;
+  isAnswerOne = false;
+  isAnswerTwo = false;
+  isAnswerThree = false;
+  isAnswerFour = false;
+  selectedAnswer = 0;
+  quizRunning = false;
 };
 
 const showScores = () => {
@@ -169,16 +197,15 @@ const endQuiz = () => {
   clearInterval(timerInterval);
 };
 
-const fetchData = () => {
-  fetch("./assets/javascript/data.json")
-    .then((response) => response.json())
-    .then((questions) => {
-      localStorage.setItem("questions", JSON.stringify(questions));
-      console.log("Fetch was successful.");
-    })
-    .catch((error) => {
-      console.error("Error fetching questions:", error);
-    });
+const fetchData = async () => {
+  try {
+    const response = await fetch("./assets/javascript/data.json");
+    const questions = await response.json();
+    data = questions;
+    console.log("Fetch was successful.");
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+  }
 };
 
 // Event Listeners
@@ -193,3 +220,5 @@ submitBtn.addEventListener("click", submitAnswer);
 
 console.log("DataIndex: " + data.questionsObj.length);
 console.log("Qindex: " + questionIndex);
+
+fetchData();
