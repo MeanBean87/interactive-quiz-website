@@ -32,6 +32,7 @@ let quizRunning = false;
 
 // Functions
 const startQuiz = async () => {
+  await fetchData();
   resetButton.addEventListener("click", resetQuiz);
   if (quizRunning) {
     return;
@@ -199,7 +200,9 @@ const endQuiz = () => {
 
 const fetchData = async () => {
   try {
-    const response = await fetch("https://meanbean87.github.io/interactive-quiz-website/assets/javascript/data.json");
+    const response = await fetch(
+      "https://meanbean87.github.io/interactive-quiz-website/assets/javascript/data.json"
+    );
     const questions = await response.json();
     data = questions;
     console.log("Fetch was successful.");
@@ -222,5 +225,6 @@ console.log("DataIndex: " + data.questionsObj.length);
 console.log("Qindex: " + questionIndex);
 
 fetchData();
+//
 //MeanBean87/interactive-quiz-website/assets/javascript/data.json
 //https://raw.githubusercontent.com/MeanBean87/interactive-quiz-website/f7dddcd0d2058acdaf99e8661a23fabcd811e2c7/assets/javascript/data.json
