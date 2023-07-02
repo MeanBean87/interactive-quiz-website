@@ -22,32 +22,74 @@
         </ul>
     </header>
     <main>
-        <h2 class="welcome-text">Hit "Start" to begin!!!</h2>
+        <h2 class="welcome-text" style="display:none">Hit "Start" to begin!!!</h2>
         <section class="quiz-container">
-                <h2 id="question-text"></h2>
-                <h3 id="timer-value"></h3>
-                <form id="answer-form">
-                    <div class="answer-button-container">
-                        <input type="radio" name="answer" id="answer-one" value="answer-one-value">
-                        <label for="answer-one" class="answer-one-label">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil dolor nam dignissimos error nemo modi soluta facere suscipit quibusdam dolorum maxime fugiat sit temporibus, laborum placeat tempore facilis, quod aliquid.</label></br>
-                    </div>
-                    <div class="answer-button-container">
-                        <input type="radio" name="answer" id="answer-two" value="answer-three-value">
-                        <label for="answer-two" class="answer-two-label">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum maiores expedita labore cumque rem quod, quisquam optio quis iure temporibus ex obcaecati commodi a impedit necessitatibus ea molestiae voluptatum corporis?</label></br>
-                    </div>
-                    <div class="answer-button-container">
-                        <input type="radio" name="answer" id="answer-three" value="answer-three-value">
-                        <label for="answer-three" class="answer-three-label">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci cupiditate mollitia magni a, excepturi ullam, sed facere nulla laboriosam dolorum, optio amet! Facilis error alias, earum sunt quisquam vitae obcaecati.</label></br>
-                    </div>
-                    <div class="answer-button-container">
-                        <input type="radio" name="answer" id="answer-four" value="answer-four-value">
-                        <label for="answer-four" class="answer-four-label">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum itaque, laboriosam numquam nobis ratione odio rem cum magni earum? Nobis eveniet quisquam atque molestiae provident rem pariatur sed. Ratione, doloribus!</label></br>
-                    </div>
-                </form>
-                <div class="submit-button-container">
-                  <button class="submit-button">Submit</button>  
+            <h2 id="question-text"></h2>
+            <h3 id="timer-value"></h3>
+            <form id="answer-form">
+                <div class="answer-button-container">
+                    <input type="radio" name="answer" id="answer-one" value="answer-one-value">
+                    <label for="answer-one" class="answer-one-label">Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Nihil dolor nam dignissimos error nemo modi soluta facere suscipit quibusdam dolorum
+                        maxime fugiat sit temporibus, laborum placeat tempore facilis, quod aliquid.</label></br>
                 </div>
+                <div class="answer-button-container">
+                    <input type="radio" name="answer" id="answer-two" value="answer-three-value">
+                    <label for="answer-two" class="answer-two-label">Lorem ipsum dolor sit amet consectetur adipisicing
+                        elit. Rerum maiores expedita labore cumque rem quod, quisquam optio quis iure temporibus ex
+                        obcaecati commodi a impedit necessitatibus ea molestiae voluptatum corporis?</label></br>
+                </div>
+                <div class="answer-button-container">
+                    <input type="radio" name="answer" id="answer-three" value="answer-three-value">
+                    <label for="answer-three" class="answer-three-label">Lorem, ipsum dolor sit amet consectetur
+                        adipisicing elit. Adipisci cupiditate mollitia magni a, excepturi ullam, sed facere nulla
+                        laboriosam dolorum, optio amet! Facilis error alias, earum sunt quisquam vitae
+                        obcaecati.</label></br>
+                </div>
+                <div class="answer-button-container">
+                    <input type="radio" name="answer" id="answer-four" value="answer-four-value">
+                    <label for="answer-four" class="answer-four-label">Lorem ipsum dolor sit amet, consectetur
+                        adipisicing elit. Eum itaque, laboriosam numquam nobis ratione odio rem cum magni earum? Nobis
+                        eveniet quisquam atque molestiae provident rem pariatur sed. Ratione, doloribus!</label></br>
+                </div>
+            </form>
+            <div class="submit-button-container">
+                <button class="submit-button">Submit</button>
+            </div>
         </section>
+        <section class="score-container">
+            <h2>Quiz Over</h2>
+            </br>
+            <h3>Your Score:</h3>
+            <p class="correct-score-value">Correct: 6</p>
+            <p class="incorrect-score-value">Incorrect: 4</p>
+            <p class="remaining-time-value">Time remaining: 60</p></br>
+            <p class="final-score-value">Total score: 120</p>
+            </br>
+            </br>
+            <section class="enter-name" style="display: none">
+                <h3>You made it on the leaderboard!</h3>
+                <h4>🎉🎉Congratulations!🎉🎉</h4>
+                </br>
+                <div>
+                    <input class="" placeholder="Enter your name"></input>
+                    <button class="submit-button">Submit</button>
+                </div>
+                </div>
+            </section>
+            <section>
+                <button class="header-button-start">Play Again</button>
+            </section>
+            <section class="leader-board-container" style="display: none">
+                <h2>Leader Board</h2>
+                <ol class="leader-board">
+                    <l1 class="rank-one">1</l1>
+                    <l1 class="rank-two">2</l1>
+                    <l1 class="rank-three">3</l1>
+                    <l1 class="rank-four">4</l1>
+                    <l1 class="rank-five">5</l1>
+                </ol>
+            </section>
     </main>
     <script src="./assets/javascript/script.js" async defer></script>
 </body>

@@ -1,5 +1,26 @@
 {
-  "highScores": [],
+  "highScores": [
+    {
+      "name": "John",
+      "score": 100
+    },
+    {
+      "name": "Emma",
+      "score": 90
+    },
+    {
+      "name": "Michael",
+      "score": 80
+    },
+    {
+      "name": "Sophia",
+      "score": 70
+    },
+    {
+      "name": "David",
+      "score": 60
+    }
+  ],
   "questionsObj": [
     {
       "question": "What is JavaScript?",

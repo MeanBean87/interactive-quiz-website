@@ -16,33 +16,30 @@ const submitBtn = document.querySelector(".submit-button");
 const quizContainer = document.querySelector(".quiz-container");
 const welcomeText = document.querySelector(".welcome-text");
 
+const correctText = document.querySelector(".correct-score-value");
+const incorrectText = document.querySelector(".incorrect-score-value");
+const remainingTimeText = document.querySelector(".remaining-time-value");
+const finalScoreText = document.querySelector(".final-score-value");
+
 // Global Variables
 let correct = 0;
 let incorrect = 0;
-let remainingTime = 120;
+let score = 0;
+let startingTime = 10;
 let timerInterval;
-let questionIndex = 0;
-let isAnswerOne = false;
-let isAnswerTwo = false;
-let isAnswerThree = false;
-let isAnswerFour = false;
-let selectedAnswer = 0;
+let selectedAnswer;
 let data = JSON.parse(localStorage.getItem("questions"));
 let quizRunning = false;
 
 // Functions
 const startQuiz = async () => {
-  await fetchData();
-  resetButton.addEventListener("click", resetQuiz);
-  if (quizRunning) {
-    return;
-  }
-  startButton.setAttribute("style", "display: none;");
-  clearInterval(timerInterval);
-  console.log("Quiz started");
   welcomeText.innerHTML = "";
+  resetButton.addEventListener("click", resetQuiz);
+  startButton.setAttribute("style", "display: none;");
   quizContainer.setAttribute("style", "display: flex;");
-  timer();
+  await fetchData();
+  timer(startingTime);
+  let questionIndex = 0;
   quizRunning = true;
 
   while (quizRunning) {
@@ -57,42 +54,22 @@ const startQuiz = async () => {
       );
     });
 
-    checkAnswer(selectedAnswer, remainingTime, questionIndex);
+    checkAnswer(selectedAnswer, startingTime, questionIndex);
     questionIndex++;
-    console.log("DataIndex: " + data.questionsObj.length);
-    console.log("Qindex: " + questionIndex);
-    console.log(questionIndex);
-    if (questionIndex === data.questionsObj.length - 1 || remainingTime === 0) {
-      endQuiz();
+    if (questionIndex === data.questionsObj.length - 1 ) {
+      resetQuiz(); //
       quizRunning = false;
-      console.log(correct);
-      console.log(incorrect);
     }
   }
 };
 
 const resetQuiz = () => {
-  resetButton.removeEventListener("click", resetQuiz);
-  answerOneBtn.removeEventListener("click", answerOne);
-  answerTwoBtn.removeEventListener("click", answerTwo);
-  answerThreeBtn.removeEventListener("click", answerThree);
-  answerFourBtn.removeEventListener("click", answerFour);
-  submitBtn.removeEventListener("click", submitAnswer);
-  startButton.setAttribute("style", "display: inline-block;");
-  welcomeText.innerHTML = "Welcome to the Quiz!";
-  quizContainer.setAttribute("style", "display: none;");
-  clearInterval(timerInterval);
-  console.log("Quiz reset");
   correct = 0;
   incorrect = 0;
-  remainingTime = 120;
-  questionIndex;
-  isAnswerOne = false;
-  isAnswerTwo = false;
-  isAnswerThree = false;
-  isAnswerFour = false;
-  selectedAnswer = 0;
-  quizRunning = false;
+  score = 0;
+  startingTime = 10;
+  clearInterval(timerInterval);
+  location.reload();
 };
 
 const showScores = () => {
@@ -100,57 +77,19 @@ const showScores = () => {
 };
 
 const answerOne = () => {
-  isAnswerOne = true;
-  isAnswerTwo = false;
-  isAnswerThree = false;
-  isAnswerFour = false;
-  console.log("Answer one selected");
+  selectedAnswer = 0;
 };
 
 const answerTwo = () => {
-  isAnswerOne = false;
-  isAnswerTwo = true;
-  isAnswerThree = false;
-  isAnswerFour = false;
-  console.log("Answer two selected");
+  selectedAnswer = 1;
 };
 
 const answerThree = () => {
-  isAnswerOne = false;
-  isAnswerTwo = false;
-  isAnswerThree = true;
-  isAnswerFour = false;
-  console.log("Answer three selected");
+  selectedAnswer = 2;
 };
 
 const answerFour = () => {
-  isAnswerOne = false;
-  isAnswerTwo = false;
-  isAnswerThree = false;
-  isAnswerFour = true;
-  console.log("Answer four selected");
-};
-
-const submitAnswer = () => {
-  let selectedAnswer = 0;
-
-  if (isAnswerOne) {
-    selectedAnswer = 1;
-  } else if (isAnswerTwo) {
-    selectedAnswer = 2;
-  } else if (isAnswerThree) {
-    selectedAnswer = 3;
-  } else if (isAnswerFour) {
-    selectedAnswer = 4;
-  } else {
-    selectedAnswer = 0;
-    if (selectedAnswer === 0) {
-      console.log("No answer selected");
-    }
-  }
-
-  console.log("Answer submitted");
-  console.log("Selected answer: " + selectedAnswer);
+  selectedAnswer = 3;
 };
 
 const getQuestion = (index) => {
@@ -161,41 +100,58 @@ const getQuestion = (index) => {
   answerFourBtnLabel.textContent = data.questionsObj[index].options[3];
 };
 
-const checkAnswer = (selectedAnswer, remainingTime, index) => {
+const checkAnswer = (selectedAnswer, index) => {
+  console.log("Answer index:" + data.questionsObj[index].answerIndex);
+  console.log("Selected answer: " + selectedAnswer);
   if (selectedAnswer === data.questionsObj[index].answerIndex) {
     console.log("Correct answer");
     correct++;
   } else {
     console.log("Incorrect answer");
     incorrect++;
-    remainingTime = remainingTime - 5;
   }
-  quizRunning = true;
 };
 
-const timer = () => {
+const timer = async (startingTime) => {
   timerInterval = setInterval(function () {
-    remainingTime--;
-    const formattedTime = timeConverter(remainingTime);
+    startingTime--;
+    let minutes = Math.floor(startingTime / 60);
+    let seconds = startingTime - minutes * 60;
+    if (seconds < 10) {
+      seconds = "0" + seconds;
+    }
+    let formattedTime = `${minutes}:${seconds}`;
     timerValue.textContent = `Time Left: ${formattedTime}`;
-    if (remainingTime === 0) {
+    if (startingTime <= 0) {
       clearInterval(timerInterval);
+      resetQuiz();
     }
   }, 1000);
-};
-
-const timeConverter = (time) => {
-  let minutes = Math.floor(time / 60);
-  let seconds = time - minutes * 60;
-  if (seconds < 10) {
-    seconds = "0" + seconds;
-  }
-  return `${minutes}:${seconds}`;
 };
 
 const endQuiz = () => {
   console.log("Quiz ended");
   clearInterval(timerInterval);
+  calculateScore();
+  correctText.textContent = correct;
+  incorrectText.textContent = incorrect;
+  remainingTimeText.textContent = startingTime;
+  finalScoreText.textContent = score;
+};
+
+const calculateScore = () => {
+  let remainingTime = 0;
+  
+  if (startingTime > 0) {
+    remainingTime = startingTime;
+  } else {
+    remainingTime = 1;
+  }
+
+  score = ((correct - (incorrect * 2)) + remainingTime);
+  if (score < 0) {
+    score = 0;
+  }
 };
 
 const fetchData = async () => {
@@ -219,12 +175,3 @@ answerOneBtn.addEventListener("click", answerOne);
 answerTwoBtn.addEventListener("click", answerTwo);
 answerThreeBtn.addEventListener("click", answerThree);
 answerFourBtn.addEventListener("click", answerFour);
-submitBtn.addEventListener("click", submitAnswer);
-
-console.log("DataIndex: " + data.questionsObj.length);
-console.log("Qindex: " + questionIndex);
-
-//fetchData();
-//
-//MeanBean87/interactive-quiz-website/assets/javascript/data.json
-//https://raw.githubusercontent.com/MeanBean87/interactive-quiz-website/f7dddcd0d2058acdaf99e8661a23fabcd811e2c7/assets/javascript/data.json
