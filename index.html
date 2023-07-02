@@ -22,7 +22,7 @@
         </ul>
     </header>
     <main>
-        <h2 class="welcome-text" style="display:none">Hit "Start" to begin!!!</h2>
+        <h2 class="welcome-text">Hit "Start" to begin!!!</h2>
         <section class="quiz-container">
             <h2 id="question-text"></h2>
             <h3 id="timer-value"></h3>
@@ -57,7 +57,7 @@
                 <button class="submit-button">Submit</button>
             </div>
         </section>
-        <section class="score-container">
+        <section class="score-container" style="display: none">
             <h2>Quiz Over</h2>
             </br>
             <h3>Your Score:</h3>
@@ -72,22 +72,24 @@
                 <h4>🎉🎉Congratulations!🎉🎉</h4>
                 </br>
                 <div>
-                    <input class="" placeholder="Enter your name"></input>
+                    <input class="name-text" placeholder="Enter your name."></input>
                     <button class="submit-button">Submit</button>
                 </div>
                 </div>
             </section>
             <section>
                 <button class="header-button-start">Play Again</button>
+                <button class="header-button-score">High Scores</button>
             </section>
-            <section class="leader-board-container" style="display: none">
+        </section>
+            <section class="high-scores-container" style="display: none">
                 <h2>Leader Board</h2>
                 <ol class="leader-board">
-                    <l1 class="rank-one">1</l1>
-                    <l1 class="rank-two">2</l1>
-                    <l1 class="rank-three">3</l1>
-                    <l1 class="rank-four">4</l1>
-                    <l1 class="rank-five">5</l1>
+                    <l1 class="rank-one"></l1>
+                    <l1 class="rank-two"></l1>
+                    <l1 class="rank-three"></l1>
+                    <l1 class="rank-four"></l1>
+                    <l1 class="rank-five"></l1>
                 </ol>
             </section>
     </main>
