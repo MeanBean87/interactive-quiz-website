@@ -1,6 +1,6 @@
 {
   "highScores": [],
-  "questions": [
+  "questionsObj": [
     {
       "question": "What is JavaScript?",
       "options": [
