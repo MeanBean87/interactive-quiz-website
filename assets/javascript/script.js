@@ -199,7 +199,7 @@ const endQuiz = () => {
 
 const fetchData = async () => {
   try {
-    const response = await fetch("MeanBean87/interactive-quiz-website/assets/javascript/data.json");
+    const response = await fetch("https://meanbean87.github.io/interactive-quiz-website/assets/javascript/data.json");
     const questions = await response.json();
     data = questions;
     console.log("Fetch was successful.");
