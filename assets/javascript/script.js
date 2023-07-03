@@ -9,8 +9,8 @@ const fetchData = async () => {
       return;
     }
 
-    const storedQuestions = localStorage.getItem("questions");
-    const storedHighScores = localStorage.getItem("highScores");
+    let storedQuestions = localStorage.getItem("questions");
+    let storedHighScores = localStorage.getItem("highScores");
 
     if (storedQuestions && storedHighScores) {
       questionsData = JSON.parse(storedQuestions);
@@ -23,18 +23,34 @@ const fetchData = async () => {
 
       const dataObj = await dataResponse.json();
 
-      if (dataObj) {
-        questionsData = dataObj.questionsArray;
-        localStorage.setItem("questions", JSON.stringify(questionsData));
-        highScoresData = dataObj.highScoresArray;
-        localStorage.setItem("highScores", JSON.stringify(highScoresData));
-        isDataFetched = true;
-        console.log("Data fetched from repository successfully.");
+      if (localStorage.getItem("questions") === null) {
+        localStorage.setItem(
+          "questions",
+          JSON.stringify(dataObj.questionsArray)
+        );
+        storedQuestions = localStorage.getItem("questions");
+        questionsData = JSON.parse(storedQuestions);
+        console.log(
+          "Fetched 'questions' from repository and updated localStorage."
+        );
+      }
+
+      if (localStorage.getItem("highScores") === null) {
+        localStorage.setItem(
+          "highScores",
+          JSON.stringify(dataObj.highScoresArray)
+        );
+        storedHighScores = localStorage.getItem("highScores");
+        highScoresData = JSON.parse(storedHighScores);
+        console.log(
+          "Fetched 'highScores' from repository and updated localStorage."
+        );
       }
     }
   } catch (error) {
     console.log("Error fetching data:", error);
   }
+  isDataFetched = true;
 };
 
 fetchData();
@@ -43,6 +59,7 @@ fetchData();
 const startButton = document.querySelector(".header-button-start");
 const resetButton = document.querySelector(".header-button-reset");
 const scoresButton = document.querySelector(".header-button-score");
+const playAgainButton = document.getElementById("play-again");
 const questionText = document.querySelector("#question-text");
 const timerValue = document.querySelector("#timer-value");
 const answerOneBtn = document.querySelector("#answer-one");
@@ -74,7 +91,7 @@ const rankFive = document.querySelector(".rank-five");
 let correct = 0;
 let incorrect = 0;
 let score = 0;
-let startingTime = 10;
+let startingTime = 5;
 let timerInterval;
 let selectedAnswer;
 let quizRunning = false;
@@ -82,7 +99,6 @@ let newHighScore = false;
 let highScoreName = "";
 let highScoreIndex;
 let remainingTime = 0;
-
 
 // Functions
 const startQuiz = async () => {
@@ -122,9 +138,31 @@ const resetQuiz = () => {
   correct = 0;
   incorrect = 0;
   score = 0;
-  startingTime = 10;
+  startingTime = 5;
+  selectedAnswer;
+  quizRunning = false;
+  newHighScore = false;
+  highScoreName = "";
+  highScoreIndex;
+  remainingTime = 0;
   clearInterval(timerInterval);
   location.reload();
+};
+
+const playAgain = () => {
+  correct = 0;
+  incorrect = 0;
+  score = 0;
+  startingTime = 5;
+  selectedAnswer;
+  quizRunning = false;
+  newHighScore = false;
+  highScoreName = "";
+  highScoreIndex;
+  remainingTime = 0;
+  clearInterval(timerInterval);
+  scoreContainer.setAttribute("style", "display: none;");
+  startQuiz();
 };
 
 const answerOne = () => {
@@ -189,11 +227,15 @@ const endQuiz = async () => {
   calculateScore();
   compareScores();
   quizContainer.setAttribute("style", "display: none;");
-  scoreContainer.setAttribute("style", "display: flex;");
+  welcomeText.setAttribute("style", "display: none;");
+  scoreContainer.setAttribute(
+    "style",
+    "display: flex; flex-direction: column;"
+  );
   correctText.textContent = `Correct: ${correct}`;
   incorrectText.textContent = `Incorrect: ${incorrect}`;
-  remainingTimeText.textContent = startingTime;
-  finalScoreText.textContent = score;
+  remainingTimeText.textContent = `Remaining Time: ${Number(remainingTime)}`;
+  finalScoreText.textContent = `Score: ${Number(score)}`;
 
   if (newHighScore) {
     await new Promise((resolve) => {
@@ -216,13 +258,7 @@ const calculateScore = () => {
   if (remainingTime < 0) {
     remainingTime = 1;
   }
-
-  console.log("Correct:", correct, typeof correct);
-  console.log("Incorrect:", incorrect, typeof incorrect);
-  console.log("Remaining time:", remainingTime, typeof remainingTime);
-  score =
-    Number(Number(correct) - Number(incorrect * 2)) + Number(remainingTime);
-  console.log("Score:", score, typeof score);
+  score = correct * 10 + remainingTime * 5 - incorrect * 20;
   if (score < 0) {
     score = 0;
   }
@@ -239,7 +275,22 @@ const compareScores = () => {
 };
 
 const showHighScores = () => {
+  correct = 0;
+  incorrect = 0;
+  score = 0;
+  startingTime = 5;
+  selectedAnswer;
+  quizRunning = false;
+  newHighScore = false;
+  highScoreName = "";
+  highScoreIndex;
+  remainingTime = 0;
+  clearInterval(timerInterval);
   welcomeText.setAttribute("style", "display: none;");
+  scoreContainer.setAttribute("style", "display: none;");
+  scoreContainer.setAttribute("style", "display: none;");
+  quizContainer.setAttribute("style", "display: none;");
+
   highScoresContainer.setAttribute("style", "display: flex;");
   let scores = highScoresData;
 
@@ -257,18 +308,18 @@ const showHighScores = () => {
   console.log("High scores displayed");
 };
 
-const loadEventListeners = async () => {
-  await fetchData();
-  if (isDataFetched) {
-    startButton.addEventListener("click", startQuiz);
-    resetButton.addEventListener("click", resetQuiz);
-    scoresButton.addEventListener("click", showHighScores);
-    answerOneBtn.addEventListener("click", answerOne);
-    answerTwoBtn.addEventListener("click", answerTwo);
-    answerThreeBtn.addEventListener("click", answerThree);
-    answerFourBtn.addEventListener("click", answerFour);
-    nameText.addEventListener("input", (event) => {
-      highScoreName = event.target.value;
-    });
-  }
-};
+// const loadEventListeners = async () => {
+//   await fetchData();
+//   if (isDataFetched) {
+startButton.addEventListener("click", startQuiz);
+playAgainButton.addEventListener("click", playAgain);
+resetButton.addEventListener("click", resetQuiz);
+scoresButton.addEventListener("click", showHighScores);
+answerOneBtn.addEventListener("click", answerOne);
+answerTwoBtn.addEventListener("click", answerTwo);
+answerThreeBtn.addEventListener("click", answerThree);
+answerFourBtn.addEventListener("click", answerFour);
+nameText.addEventListener("input", (event) => {
+  highScoreName = event.target.value;
+});
+
