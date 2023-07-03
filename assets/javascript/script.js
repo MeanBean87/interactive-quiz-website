@@ -90,7 +90,7 @@ const rankFive = document.querySelector(".rank-five");
 // Global Variables
 let correct = 0;
 let incorrect = 0;
-let score = 0;
+let score = 101;
 let startingTime = 5;
 let timerInterval;
 let selectedAnswer;
@@ -158,7 +158,7 @@ const playAgain = () => {
   quizRunning = false;
   newHighScore = false;
   highScoreName = "";
-  highScoreIndex;
+  highScoreIndex ;
   remainingTime = 0;
   clearInterval(timerInterval);
   scoreContainer.setAttribute("style", "display: none;");
@@ -323,3 +323,4 @@ nameText.addEventListener("input", (event) => {
   highScoreName = event.target.value;
 });
 
+compareScores();
