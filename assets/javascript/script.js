@@ -148,9 +148,9 @@ const startQuiz = async () => {
 };
 
 const resetQuiz = () => {
+  clearInterval(timerInterval);
   resetValues();
   fetchData();
-  clearInterval(timerInterval);
   startButton.setAttribute("style", "display: inline-block;");
   welcomeText.setAttribute("style", "display: flex;");
   welcomeText.textContent = 'Hit "Start" to begin!!!';
@@ -189,7 +189,7 @@ const checkAnswer = (selectedAnswer, questionIndex) => {
   }
 };
 
-const timer = async (startingTime) => {
+const timer = (startingTime) => {
   timerInterval = setInterval(function () {
     startingTime--;
     remainingTime = startingTime;
