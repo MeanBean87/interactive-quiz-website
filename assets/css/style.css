@@ -35,7 +35,7 @@
   --color-warning-light: #ffe54c;
 
   /* Font Family */
-  --consolas: "Consolas", "Lucida Console", "Courier New", monospace;
+  --electrolize: 'Electrolize', sans-serif;
 
   /* Box Shadow */
   --box-shadow: 2.7px 2.7px 2.2px rgba(0, 0, 0, 0.02),
@@ -64,7 +64,7 @@ header {
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 0 20px;
-  font-family: var(--consolas);
+  font-family: var(--electrolize);
   font-size: 16px;
   margin-bottom: 10px;
   min-height: 70px;
@@ -75,7 +75,7 @@ header {
 .header-button-start {
   border: 2px dashed var(--color-success-light);
   background-color: var(--color-background-dark);
-  font-family: var(--consolas);
+  font-family: var(--electrolize);
   color: var(--color-success-light);
   font-size: 12px;
   width: 100px;
@@ -86,7 +86,7 @@ header {
 .header-button-reset {
   border: 2px dashed var(--color-error);
   background-color: var(--color-background-dark);
-  font-family: var(--consolas);
+  font-family: var(--electrolize);
   color: var(--color-error);
   font-size: 12px;
   width: 100px;
@@ -97,7 +97,7 @@ header {
 .header-button-score {
   border: 2px dashed var(--color-warning);
   background-color: var(--color-background-dark);
-  font-family: var(--consolas);
+  font-family: var(--electrolize);
   color: var(--color-warning);
   font-size: 12px;
   width: 100px;
@@ -170,7 +170,7 @@ main {
   justify-content: center;
   flex-grow: 1;
   color: var(--color-text-dark);
-  font-family: var(--consolas);
+  font-family: var(--electrolize);
 }
 
 /* Quiz Container Styles */
@@ -180,7 +180,7 @@ main {
   justify-content: space-evenly;
   background-color: var(--color-background-dark);
   color: var(--color-text-dark);
-  font-family: var(--consolas);
+  font-family: var(--electrolize);
   font-size: 16px;
   padding: 10px;
   border: 2px solid var(--color-border-dark);
@@ -258,7 +258,7 @@ main {
 .submit-button {
   border: 2px dashed var(--color-primary);
   background-color: var(--color-background-dark);
-  font-family: var(--consolas);
+  font-family: var(--electrolize);
   color: var(--color-primary);
   font-size: 12px;
   width: 100px;
@@ -354,7 +354,7 @@ footer {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  font-family: var(--consolas);
+  font-family: var(--electrolize);
   font-size: 16px;
   width: 100vw;
   margin-top: 10px;
