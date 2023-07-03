@@ -1,5 +1,5 @@
 {
-  "highScores": [
+  "highScoresArray": [
     {
       "name": "John",
       "score": 100
@@ -21,7 +21,7 @@
       "score": 60
     }
   ],
-  "questionsObj": [
+  "questionsArray": [
     {
       "question": "What is JavaScript?",
       "options": [

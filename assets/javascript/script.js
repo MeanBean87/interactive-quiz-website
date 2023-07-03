@@ -1,5 +1,5 @@
-let data = null;
-let highScores = null;
+let questionsData;
+let highScoresData;
 let isDataFetched = false;
 
 const fetchData = async () => {
@@ -9,25 +9,31 @@ const fetchData = async () => {
       return;
     }
 
-    const questionsResponse = await fetch(
-      "https://meanbean87.github.io/interactive-quiz-website/assets/javascript/data.json"
-    );
-    const questionsData = await questionsResponse.json();
-    console.log("Questions fetch was successful.");
-    data = questionsData;
+    const storedQuestions = localStorage.getItem("questions");
+    const storedHighScores = localStorage.getItem("highScores");
 
-    const highScoresData = localStorage.getItem("highScores");
-    highScores = highScoresData ? JSON.parse(highScoresData) : data.highScores;
-    console.log("High scores loaded:", highScores);
+    if (storedQuestions && storedHighScores) {
+      questionsData = JSON.parse(storedQuestions);
+      highScoresData = JSON.parse(storedHighScores);
+      console.log("Data fetched from localStorage successfully.");
+    } else {
+      const dataResponse = await fetch(
+        "https://meanbean87.github.io/interactive-quiz-website/assets/javascript/data.json"
+      );
 
-    if (!highScoresData) {
-      localStorage.setItem("highScores", JSON.stringify(data.highScores));
-      console.log("Default high scores stored in localStorage.");
+      const dataObj = await dataResponse.json();
+
+      if (dataObj) {
+        questionsData = dataObj.questionsArray;
+        localStorage.setItem("questions", JSON.stringify(questionsData));
+        highScoresData = dataObj.highScoresArray;
+        localStorage.setItem("highScores", JSON.stringify(highScoresData));
+        isDataFetched = true;
+        console.log("Data fetched from repository successfully.");
+      }
     }
-
-    isDataFetched = true;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.log("Error fetching data:", error);
   }
 };
 
@@ -71,29 +77,31 @@ let score = 0;
 let startingTime = 10;
 let timerInterval;
 let selectedAnswer;
-// let data;
-// let highScores = JSON.parse(localStorage.getItem("highScores"));
 let quizRunning = false;
 let newHighScore = false;
 let highScoreName = "";
 let highScoreIndex;
+let remainingTime = 0;
+
 
 // Functions
 const startQuiz = async () => {
   welcomeText.innerHTML = "";
   resetButton.addEventListener("click", resetQuiz);
   startButton.setAttribute("style", "display: none;");
+  let questionIndex = 0;
+  getQuestion(questionIndex);
   quizContainer.setAttribute("style", "display: flex;");
   timer(startingTime);
-  let questionIndex = 0;
   let quizRunning = true;
 
   const submitHandler = () => {
-    checkAnswer(selectedAnswer, startingTime, questionIndex);
+    checkAnswer(selectedAnswer, questionIndex);
     questionIndex++;
-    if (questionIndex === data.questionsObj.length - 1) {
-      clearInterval(timerInterval);
-      resetQuiz();
+    console.log("Question index:", questionIndex);
+    console.log("Data length:", questionsData.length);
+    if (questionIndex === questionsData.length) {
+      endQuiz();
       quizRunning = false;
     }
   };
@@ -136,17 +144,18 @@ const answerFour = () => {
 };
 
 const getQuestion = (index) => {
-  questionText.textContent = data.questionsObj[index].question;
-  answerOneBtnLabel.innerHTML = data.questionsObj[index].options[0];
-  answerTwoBtnLabel.innerHTML = data.questionsObj[index].options[1];
-  answerThreeBtnLabel.textContent = data.questionsObj[index].options[2];
-  answerFourBtnLabel.textContent = data.questionsObj[index].options[3];
+  questionText.textContent = questionsData[index].question;
+  answerOneBtnLabel.innerHTML = questionsData[index].options[0];
+  answerTwoBtnLabel.innerHTML = questionsData[index].options[1];
+  answerThreeBtnLabel.textContent = questionsData[index].options[2];
+  answerFourBtnLabel.textContent = questionsData[index].options[3];
 };
 
-const checkAnswer = (selectedAnswer, index) => {
-  console.log("Answer index:" + data.questionsObj[index].answerIndex);
-  console.log("Selected answer: " + selectedAnswer);
-  if (selectedAnswer === data.questionsObj[index].answerIndex) {
+const checkAnswer = (selectedAnswer, questionIndex) => {
+  console.log("Question index:", questionIndex);
+  console.log("Answer index:", questionsData[questionIndex].answerIndex);
+  console.log("Selected answer:", selectedAnswer);
+  if (selectedAnswer === questionsData[questionIndex].answerIndex) {
     console.log("Correct answer");
     correct++;
   } else {
@@ -158,16 +167,18 @@ const checkAnswer = (selectedAnswer, index) => {
 const timer = async (startingTime) => {
   timerInterval = setInterval(function () {
     startingTime--;
+    remainingTime = startingTime;
     let minutes = Math.floor(startingTime / 60);
     let seconds = startingTime - minutes * 60;
     if (seconds < 10) {
       seconds = "0" + seconds;
     }
+
     let formattedTime = `${minutes}:${seconds}`;
     timerValue.textContent = `Time Left: ${formattedTime}`;
     if (startingTime <= 0) {
       clearInterval(timerInterval);
-      resetQuiz();
+      endQuiz();
     }
   }, 1000);
 };
@@ -189,8 +200,8 @@ const endQuiz = async () => {
       submitBtn.addEventListener("click", () => {
         enterName.setAttribute("style", "display: flex;");
         const highScoreName = document.querySelector(".name-text").value;
-        highScores[highScoreIndex] = { name: highScoreName, score: score };
-        localStorage.setItem("highScores", JSON.stringify(highScores));
+        highScoresData[highScoreIndex] = { name: highScoreName, score: score };
+        localStorage.setItem("highScores", JSON.stringify(highScoresData));
         resolve();
       });
     });
@@ -202,23 +213,24 @@ const endQuiz = async () => {
 };
 
 const calculateScore = () => {
-  let remainingTime = 0;
-
-  if (startingTime > 0) {
-    remainingTime = startingTime;
-  } else {
+  if (remainingTime < 0) {
     remainingTime = 1;
   }
 
-  score = correct - incorrect * 2 + remainingTime;
+  console.log("Correct:", correct, typeof correct);
+  console.log("Incorrect:", incorrect, typeof incorrect);
+  console.log("Remaining time:", remainingTime, typeof remainingTime);
+  score =
+    Number(Number(correct) - Number(incorrect * 2)) + Number(remainingTime);
+  console.log("Score:", score, typeof score);
   if (score < 0) {
     score = 0;
   }
 };
 
 const compareScores = () => {
-  for (i = 0; i < highScores.length; i++) {
-    if (score > highScores[i].score) {
+  for (let i = 0; i < highScoresData.length; i++) {
+    if (score > Number(highScoresData[i].score)) {
       newHighScore = true;
       highScoreIndex = i;
       break;
@@ -227,33 +239,36 @@ const compareScores = () => {
 };
 
 const showHighScores = () => {
+  welcomeText.setAttribute("style", "display: none;");
   highScoresContainer.setAttribute("style", "display: flex;");
-  let scores = highScores;
+  let scores = highScoresData;
 
   if (scores && scores.length >= 5) {
-    rankOne.textContent = `1. ${highScores[0].name} - ${highScores[0].score}`;
-    rankTwo.textContent = `2. ${highScores[1].name} - ${highScores[1].score}`;
-    rankThree.textContent = `3. ${highScores[2].name} - ${highScores[2].score}`;
-    rankFour.textContent = `4. ${highScores[3].name} - ${highScores[3].score}`;
-    rankFive.textContent = `5. ${highScores[4].name} - ${highScores[4].score}`;
+    rankOne.textContent = `1. ${highScoresData[0].name} - ${highScoresData[0].score}`;
+    rankTwo.textContent = `2. ${highScoresData[1].name} - ${highScoresData[1].score}`;
+    rankThree.textContent = `3. ${highScoresData[2].name} - ${highScoresData[2].score}`;
+    rankFour.textContent = `4. ${highScoresData[3].name} - ${highScoresData[3].score}`;
+    rankFive.textContent = `5. ${highScoresData[4].name} - ${highScoresData[4].score}`;
   } else {
-    console.log("Invalid highScores data:", scores);
-    highScoresContainer.innerHTML = "Invalid highScores data.";
+    console.log("Invalid highScoresData:", scores);
+    highScoresContainer.innerHTML = "Invalid highScoresData.";
   }
 
   console.log("High scores displayed");
 };
 
-
-// Event Listeners
-startButton.addEventListener("click", startQuiz);
-resetButton.addEventListener("click", resetQuiz);
-scoresButton.addEventListener("click", showHighScores);
-answerOneBtn.addEventListener("click", answerOne);
-answerTwoBtn.addEventListener("click", answerTwo);
-answerThreeBtn.addEventListener("click", answerThree);
-answerFourBtn.addEventListener("click", answerFour);
-nameText.addEventListener("input", (event) => {
-highScoreName = event.target.value;
-});
-
+const loadEventListeners = async () => {
+  await fetchData();
+  if (isDataFetched) {
+    startButton.addEventListener("click", startQuiz);
+    resetButton.addEventListener("click", resetQuiz);
+    scoresButton.addEventListener("click", showHighScores);
+    answerOneBtn.addEventListener("click", answerOne);
+    answerTwoBtn.addEventListener("click", answerTwo);
+    answerThreeBtn.addEventListener("click", answerThree);
+    answerFourBtn.addEventListener("click", answerFour);
+    nameText.addEventListener("input", (event) => {
+      highScoreName = event.target.value;
+    });
+  }
+};
