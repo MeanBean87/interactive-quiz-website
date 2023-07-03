@@ -91,91 +91,70 @@ const rankFive = document.querySelector(".rank-five");
 // Global Variables
 let correct = 0;
 let incorrect = 0;
-let score;
-let startingTime = 5;
+let score = 0;
+let startingTime = 181;
 let timerInterval;
-let selectedAnswer;
-let quizRunning = false;
+let selectedAnswer = undefined;
 let newHighScore = false;
 let highScoreName = "";
 let highScoreIndex = -1;
 let remainingTime = 0;
+let questionIndex = 0;
 
 // Functions
-const startQuiz = async () => {
-  await fetchData();
-  // correct = 0;
-  // incorrect = 0;
-  // score;
-  // startingTime = 5;
-  // timerInterval;
-  // selectedAnswer;
-  // quizRunning = false;
-  // newHighScore = false;
-  // highScoreName = "";
-  // highScoreIndex = -1;
-  // remainingTime = 0;
-  welcomeText.innerHTML = "";
-  highScoresContainer.setAttribute("style", "display: none;");
-  scoreContainer.setAttribute("style", "display: none;");
-  resetButton.addEventListener("click", resetQuiz);
-  startButton.setAttribute("style", "display: none;");
-  let questionIndex = 0;
-  getQuestion(questionIndex);
-  quizContainer.setAttribute("style", "display: flex;");
-  timer(startingTime);
-  quizRunning = true;
 
-  const submitHandler = () => {
-    checkAnswer(selectedAnswer, questionIndex);
-    questionIndex++;
-    console.log("Question index:", questionIndex);
-    console.log("Data length:", questionsData.length);
-    if (questionIndex === questionsData.length) {
-      endQuiz();
-      quizRunning = false;
-    }
-  };
-
-  submitBtn.addEventListener("click", submitHandler);
-
-  while (quizRunning) {
-    getQuestion(questionIndex);
-    await new Promise((resolve) => {
-      submitBtn.addEventListener("click", resolve, { once: true });
-    });
-  }
-
-  submitBtn.removeEventListener("click", submitHandler);
-};
-
-const resetQuiz = () => {
+const resetValues = () => {
   correct = 0;
   incorrect = 0;
   score = 0;
-  startingTime = 5;
-  selectedAnswer;
-  quizRunning = false;
+  startingTime = 181;
+  timerInterval = null;
+  selectedAnswer = undefined;
   newHighScore = false;
   highScoreName = "";
-  highScoreIndex;
+  highScoreIndex = -1;
   remainingTime = 0;
-  clearInterval(timerInterval);
+  welcomeText.innerHTML = "";
+  questionIndex = 0;
+  highScoresContainer.setAttribute("style", "display: none;");
   scoreContainer.setAttribute("style", "display: none;");
+  enterName.setAttribute("style", "display: none;");
+  quizContainer.setAttribute("style", "display: none;");
+  startButton.setAttribute("style", "display: inline-block;");
+};
+
+const submitHandler = () => {
+  checkAnswer(selectedAnswer, questionIndex);
+  questionIndex++;
+  if (questionIndex === questionsData.length) {
+    endQuiz();
+  } else {
+    getQuestion(questionIndex);
+  }
+};
+
+const startQuiz = async () => {
+  await new Promise((resolve) => {
+    resetValues();
+    resolve();
+  });
+
+  startButton.setAttribute("style", "display: none;");
+
+  getQuestion(questionIndex);
+  quizContainer.setAttribute("style", "display: flex;");
+  timer(startingTime);
+  submitBtn.addEventListener("click", submitHandler);
+};
+
+const resetQuiz = () => {
+  resetValues();
+  fetchData();
+  clearInterval(timerInterval);
   startButton.setAttribute("style", "display: inline-block;");
   welcomeText.setAttribute("style", "display: flex;");
   welcomeText.textContent = 'Hit "Start" to begin!!!';
-  quizContainer.setAttribute("style", "display: none;");
-  highScoresContainer.setAttribute("style", "display: none;");
-  enterName.setAttribute("style", "display: none;");
   console.log("Quiz reset");
-};
-
-const playAgain = () => {
-  resetQuiz();
-  clearInterval(timerInterval);
-  scoreContainer.setAttribute("style", "display: none;");
-  startQuiz();
 };
 
 const answerOne = () => {
@@ -203,14 +182,9 @@ const getQuestion = (index) => {
 };
 
 const checkAnswer = (selectedAnswer, questionIndex) => {
-  console.log("Question index:", questionIndex);
-  console.log("Answer index:", questionsData[questionIndex].answerIndex);
-  console.log("Selected answer:", selectedAnswer);
   if (selectedAnswer === questionsData[questionIndex].answerIndex) {
-    console.log("Correct answer");
     correct++;
   } else {
-    console.log("Incorrect answer");
     incorrect++;
   }
 };
@@ -249,24 +223,27 @@ const endQuiz = async () => {
   incorrectText.textContent = `Incorrect: ${incorrect}`;
   remainingTimeText.textContent = `Remaining Time: ${Number(remainingTime)}`;
   finalScoreText.textContent = `Score: ${Number(score)}`;
-  console.log("High score index:", highScoreIndex);
-  console.log("New high score:", newHighScore);
 
   if (newHighScore) {
     enterName.setAttribute("style", "display: flex;");
+  
     const promise = new Promise((resolve) => {
       nameText.addEventListener("input", (event) => {
         highScoreName = event.target.value;
-        console.log("High score name:", highScoreName);
       });
-      console.log("highscoredata: ", highScoresData);
+  
       formSubmitBtn.addEventListener("click", () => {
-        console.log("Submit button clicked");
-        highScoresData[highScoreIndex] = { name: highScoreName, score: score };
+        const newScore = { name: highScoreName, score: score };
+  
+        highScoresData.splice(highScoreIndex, 0, newScore);
+  
+        if (highScoresData.length > 5) {
+          highScoresData.pop();
+        }
+  
         localStorage.setItem("highScores", JSON.stringify(highScoresData));
-        console.log("High scores updated");
-        highScoresData = JSON.parse(localStorage.getItem("highScores")); // Update highScoresData
-        resolve(); // Resolve the promise to indicate completion
+        highScoresData = JSON.parse(localStorage.getItem("highScores"));
+        resolve();
       });
     });
 
@@ -278,11 +255,13 @@ const endQuiz = async () => {
     showHighScores();
   }
 };
+
 const calculateScore = () => {
   if (remainingTime < 0) {
     remainingTime = 1;
   }
-  score = correct * 10 + remainingTime * 5 - incorrect * 20;
+  score = (correct - (incorrect * 4)) + remainingTime;
+  console.log("Score:", score);
   if (score < 0) {
     score = 0;
   }
@@ -293,25 +272,12 @@ const compareScores = () => {
     if (score > Number(highScoresData[i].score)) {
       newHighScore = true;
       highScoreIndex = i;
-      console.log("New high score!");
-      console.log("High score index:", highScoreIndex);
       break;
     }
   }
 };
 
 const showHighScores = () => {
-  correct = 0;
-  incorrect = 0;
-  score = 0;
-  startingTime = 5;
-  selectedAnswer;
-  quizRunning = false;
-  newHighScore = false;
-  highScoreName = "";
-  highScoreIndex;
-  remainingTime = 0;
-  clearInterval(timerInterval);
   welcomeText.setAttribute("style", "display: none;");
   scoreContainer.setAttribute("style", "display: none;");
   scoreContainer.setAttribute("style", "display: none;");
@@ -330,15 +296,10 @@ const showHighScores = () => {
     console.log("Invalid highScoresData:", scores);
     highScoresContainer.innerHTML = "Invalid highScoresData.";
   }
-
-  console.log("High scores displayed");
 };
 
-// const loadEventListeners = async () => {
-//   await fetchData();
-//   if (isDataFetched) {
 startButton.addEventListener("click", startQuiz);
-playAgainButton.addEventListener("click", playAgain);
+playAgainButton.addEventListener("click", resetQuiz);
 resetButton.addEventListener("click", resetQuiz);
 scoresButton.addEventListener("click", showHighScores);
 answerOneBtn.addEventListener("click", answerOne);

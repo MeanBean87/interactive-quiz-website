@@ -1,13 +1,9 @@
 :root {
   /* Primary Colors */
   --color-primary: #2d9ee0;
-  --color-primary-dark: #186b8f;
-  --color-primary-light: #3eaedc;
 
   /* Secondary Colors */
   --color-secondary: #48a066;
-  --color-secondary-dark: #2f7147;
-  --color-secondary-light: #5dbd84;
 
   /* Background Colors */
   --color-background: #292d3e;
@@ -15,14 +11,11 @@
   --color-background-light: #32364b;
 
   /* Text Colors */
-  --color-text: #ffffff;
   --color-text-dark: #cccccc;
   --color-text-light: #e5e5e5;
 
   /* Accent Colors */
   --color-accent: #ffab29;
-  --color-accent-dark: #d4871c;
-  --color-accent-light: #ffc752;
 
   /* Border Colors */
   --color-border: #707070;
@@ -31,12 +24,9 @@
 
   /* Error Colors */
   --color-error: #ff4d4d;
-  --color-error-dark: #cc3333;
-  --color-error-light: #ff7373;
 
   /* Success Colors */
   --color-success: #47c971;
-  --color-success-dark: #389a5f;
   --color-success-light: #5edf89;
 
   /* Warning Colors */
@@ -46,6 +36,14 @@
 
   /* Font Family */
   --consolas: "Consolas", "Lucida Console", "Courier New", monospace;
+
+  /* Box Shadow */
+  --box-shadow: 2.7px 2.7px 2.2px rgba(0, 0, 0, 0.02),
+    6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+    12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
+    22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+    41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+    100px 100px 80px rgba(0, 0, 0, 0.07);
 }
 
 body {
@@ -187,8 +185,8 @@ main {
   padding: 10px;
   border: 2px solid var(--color-border-dark);
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 999px; 
+  box-shadow: var(--box-shadow);
+  max-width: 999px;
   margin: 0px 10px;
 }
 
@@ -228,7 +226,7 @@ main {
 .selected {
   background-color: var(--color-success);
   border: 2px solid var(--color-border-light);
-  color: black
+  color: black;
 }
 
 @media (hover: hover) {
@@ -239,7 +237,6 @@ main {
     scale: 1.1;
     cursor: pointer;
   }
-
 }
 
 @media (hover: none) {
@@ -250,7 +247,6 @@ main {
     scale: 1.1;
     cursor: pointer;
   }
-
 }
 
 .submit-button-container {
@@ -272,19 +268,17 @@ main {
 
 /* Scores Styles */
 .score-container {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: var(--color-background-dark);
   border: 2px solid var(--color-border-dark);
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   max-width: 999px;
   min-width: 300px;
-  max-height: 999px;
   min-height: 300px;
-  margin: 0px 10px; 
   padding: 16px;
 }
 
@@ -292,6 +286,15 @@ main {
   display: none;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 32px;
+}
+
+.name-text {
+  font-size: 16px;
+  margin: 10px;
+  text-align: center;
+  height: 32px;
+  width: auto;
 }
 
 /* High Scores Styles  */
@@ -303,14 +306,13 @@ main {
   background-color: var(--color-background-dark);
   border: 2px solid var(--color-border-dark);
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   max-width: 999px;
   min-width: 300px;
   max-height: 999px;
   min-height: 300px;
-  margin: 0px 10px; 
+  margin: 0px 10px;
   padding: 16px;
-  
 }
 
 .leader-board {
@@ -343,7 +345,6 @@ main {
 .rank-five {
   color: var(--color-text-dark);
 }
-
 
 /* Footer Styles */
 footer {
