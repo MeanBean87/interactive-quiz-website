@@ -71,6 +71,7 @@ const answerThreeBtnLabel = document.querySelector(".answer-three-label");
 const answerFourBtn = document.querySelector("#answer-four");
 const answerFourBtnLabel = document.querySelector(".answer-four-label");
 const submitBtn = document.querySelector(".submit-button");
+const formSubmitBtn = document.querySelector("#form-submit");
 const quizContainer = document.querySelector(".quiz-container");
 const scoreContainer = document.querySelector(".score-container");
 const welcomeText = document.querySelector(".welcome-text");
@@ -90,26 +91,40 @@ const rankFive = document.querySelector(".rank-five");
 // Global Variables
 let correct = 0;
 let incorrect = 0;
-let score = 101;
+let score;
 let startingTime = 5;
 let timerInterval;
 let selectedAnswer;
 let quizRunning = false;
 let newHighScore = false;
 let highScoreName = "";
-let highScoreIndex;
+let highScoreIndex = -1;
 let remainingTime = 0;
 
 // Functions
 const startQuiz = async () => {
+  await fetchData();
+  // correct = 0;
+  // incorrect = 0;
+  // score;
+  // startingTime = 5;
+  // timerInterval;
+  // selectedAnswer;
+  // quizRunning = false;
+  // newHighScore = false;
+  // highScoreName = "";
+  // highScoreIndex = -1;
+  // remainingTime = 0;
   welcomeText.innerHTML = "";
+  highScoresContainer.setAttribute("style", "display: none;");
+  scoreContainer.setAttribute("style", "display: none;");
   resetButton.addEventListener("click", resetQuiz);
   startButton.setAttribute("style", "display: none;");
   let questionIndex = 0;
   getQuestion(questionIndex);
   quizContainer.setAttribute("style", "display: flex;");
   timer(startingTime);
-  let quizRunning = true;
+  quizRunning = true;
 
   const submitHandler = () => {
     checkAnswer(selectedAnswer, questionIndex);
@@ -146,20 +161,18 @@ const resetQuiz = () => {
   highScoreIndex;
   remainingTime = 0;
   clearInterval(timerInterval);
-  location.reload();
+  scoreContainer.setAttribute("style", "display: none;");
+  startButton.setAttribute("style", "display: inline-block;");
+  welcomeText.setAttribute("style", "display: flex;");
+  welcomeText.textContent = 'Hit "Start" to begin!!!';
+  quizContainer.setAttribute("style", "display: none;");
+  highScoresContainer.setAttribute("style", "display: none;");
+  enterName.setAttribute("style", "display: none;");
+  console.log("Quiz reset");
 };
 
 const playAgain = () => {
-  correct = 0;
-  incorrect = 0;
-  score = 0;
-  startingTime = 5;
-  selectedAnswer;
-  quizRunning = false;
-  newHighScore = false;
-  highScoreName = "";
-  highScoreIndex ;
-  remainingTime = 0;
+  resetQuiz();
   clearInterval(timerInterval);
   scoreContainer.setAttribute("style", "display: none;");
   startQuiz();
@@ -236,24 +249,35 @@ const endQuiz = async () => {
   incorrectText.textContent = `Incorrect: ${incorrect}`;
   remainingTimeText.textContent = `Remaining Time: ${Number(remainingTime)}`;
   finalScoreText.textContent = `Score: ${Number(score)}`;
+  console.log("High score index:", highScoreIndex);
+  console.log("New high score:", newHighScore);
 
   if (newHighScore) {
-    await new Promise((resolve) => {
-      submitBtn.addEventListener("click", () => {
-        enterName.setAttribute("style", "display: flex;");
-        const highScoreName = document.querySelector(".name-text").value;
+    enterName.setAttribute("style", "display: flex;");
+    const promise = new Promise((resolve) => {
+      nameText.addEventListener("input", (event) => {
+        highScoreName = event.target.value;
+        console.log("High score name:", highScoreName);
+      });
+      console.log("highscoredata: ", highScoresData);
+      formSubmitBtn.addEventListener("click", () => {
+        console.log("Submit button clicked");
         highScoresData[highScoreIndex] = { name: highScoreName, score: score };
         localStorage.setItem("highScores", JSON.stringify(highScoresData));
-        resolve();
+        console.log("High scores updated");
+        highScoresData = JSON.parse(localStorage.getItem("highScores")); // Update highScoresData
+        resolve(); // Resolve the promise to indicate completion
       });
     });
-  } else {
-    submitBtn.addEventListener("click", () => {
-      location.reload();
-    });
+
+    await promise;
+    nameText.value = "";
+    enterName.setAttribute("style", "display: none;");
+    scoreContainer.setAttribute("style", "display: none;");
+    startButton.setAttribute("style", "display: inline-block;");
+    showHighScores();
   }
 };
-
 const calculateScore = () => {
   if (remainingTime < 0) {
     remainingTime = 1;
@@ -269,6 +293,8 @@ const compareScores = () => {
     if (score > Number(highScoresData[i].score)) {
       newHighScore = true;
       highScoreIndex = i;
+      console.log("New high score!");
+      console.log("High score index:", highScoreIndex);
       break;
     }
   }
@@ -322,5 +348,3 @@ answerFourBtn.addEventListener("click", answerFour);
 nameText.addEventListener("input", (event) => {
   highScoreName = event.target.value;
 });
-
-compareScores();
