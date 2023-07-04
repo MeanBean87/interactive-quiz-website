@@ -1,7 +1,10 @@
+// Declares the variables that will be used to store the questions and high scores data
 let questionsData;
 let highScoresData;
 let isDataFetched = false;
 
+// Fetches the questions and high scores data from the repository and stores it in localStorage
+// If the data has already been fetched, it will be used from localStorage instead of being fetched again.
 const fetchData = async () => {
   try {
     if (isDataFetched) {
@@ -53,6 +56,7 @@ const fetchData = async () => {
   isDataFetched = true;
 };
 
+// Calls the fetchData function
 fetchData();
 
 // Selection Statements
@@ -62,15 +66,12 @@ const scoresButton = document.querySelector(".header-button-score");
 const playAgainButton = document.getElementById("play-again");
 const questionText = document.querySelector("#question-text");
 const timerValue = document.querySelector("#timer-value");
-const answerOneBtn = document.querySelector("#answer-one");
-const answerOneBtnLabel = document.querySelector(".answer-one-label");
-const answerTwoBtn = document.querySelector("#answer-two");
-const answerTwoBtnLabel = document.querySelector(".answer-two-label");
-const answerThreeBtn = document.querySelector("#answer-three");
-const answerThreeBtnLabel = document.querySelector(".answer-three-label");
-const answerFourBtn = document.querySelector("#answer-four");
-const answerFourBtnLabel = document.querySelector(".answer-four-label");
-const submitBtn = document.querySelector(".submit-button");
+const answerOneBtn = document.getElementById("answer-one");
+const answerTwoBtn = document.getElementById("answer-two");
+const answerThreeBtn = document.getElementById("answer-three");
+const answerFourBtn = document.getElementById("answer-four");
+const resultText = document.getElementById("result");
+const nextBtn = document.querySelector(".submit-button");
 const formSubmitBtn = document.querySelector("#form-submit");
 const quizContainer = document.querySelector(".quiz-container");
 const scoreContainer = document.querySelector(".score-container");
@@ -103,6 +104,7 @@ let questionIndex = 0;
 
 // Functions
 
+// Sets all global variables to their default values
 const resetValues = () => {
   correct = 0;
   incorrect = 0;
@@ -123,8 +125,20 @@ const resetValues = () => {
   startButton.setAttribute("style", "display: inline-block;");
 };
 
-const submitHandler = () => {
-  checkAnswer(selectedAnswer, questionIndex);
+// Removes a class from all elements with the specified class name
+const removeClassFromElements = (className) => {
+  const elements = document.getElementsByClassName(className);
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].classList.remove(className);
+  }
+};
+
+// Handles the submit button click event during the quiz
+const nextQuestionHandler = () => {
+  resultText.textContent = "";
+  removeClassFromElements("correct");
+  removeClassFromElements("incorrect");
+  nextBtn.removeEventListener("click", nextQuestionHandler);
   questionIndex++;
   if (questionIndex === questionsData.length) {
     endQuiz();
@@ -133,6 +147,7 @@ const submitHandler = () => {
   }
 };
 
+// Starts the quiz
 const startQuiz = async () => {
   await new Promise((resolve) => {
     resetValues();
@@ -140,15 +155,18 @@ const startQuiz = async () => {
   });
 
   startButton.setAttribute("style", "display: none;");
-
   getQuestion(questionIndex);
   quizContainer.setAttribute("style", "display: flex;");
   timer(startingTime);
-  submitBtn.addEventListener("click", submitHandler);
 };
 
+// Resets the quiz
 const resetQuiz = () => {
+  resultText.textContent = "";
+  removeClassFromElements("correct");
+  removeClassFromElements("incorrect");
   clearInterval(timerInterval);
+  nextBtn.removeEventListener("click", nextQuestionHandler);
   resetValues();
   fetchData();
   startButton.setAttribute("style", "display: inline-block;");
@@ -157,38 +175,71 @@ const resetQuiz = () => {
   console.log("Quiz reset");
 };
 
-const answerOne = () => {
+// Sets the selectedAnswer variable to the index of the selected answer
+const answerOne = (event) => {
+  event.preventDefault();
   selectedAnswer = 0;
+  checkAnswer(selectedAnswer, questionIndex);
 };
 
-const answerTwo = () => {
+const answerTwo = (event) => {
+  event.preventDefault();
   selectedAnswer = 1;
+  checkAnswer(selectedAnswer, questionIndex);
 };
 
-const answerThree = () => {
+const answerThree = (event) => {
+  event.preventDefault();
   selectedAnswer = 2;
+  checkAnswer(selectedAnswer, questionIndex);
 };
 
-const answerFour = () => {
+const answerFour = (event) => {
+  event.preventDefault();
   selectedAnswer = 3;
+  checkAnswer(selectedAnswer, questionIndex);
 };
 
+// Gets the question and answer options from the questionsData array and displays them on the page
 const getQuestion = (index) => {
   questionText.textContent = questionsData[index].question;
-  answerOneBtnLabel.innerHTML = questionsData[index].options[0];
-  answerTwoBtnLabel.innerHTML = questionsData[index].options[1];
-  answerThreeBtnLabel.textContent = questionsData[index].options[2];
-  answerFourBtnLabel.textContent = questionsData[index].options[3];
+  answerOneBtn.textContent = questionsData[index].options[0];
+  answerTwoBtn.textContent = questionsData[index].options[1];
+  answerThreeBtn.textContent = questionsData[index].options[2];
+  answerFourBtn.textContent = questionsData[index].options[3];
 };
 
+// Checks the selected answer against the correct answer and increments the correct or incorrect variables accordingly
 const checkAnswer = (selectedAnswer, questionIndex) => {
-  if (selectedAnswer === questionsData[questionIndex].answerIndex) {
+  const correctAnswerIndex = questionsData[questionIndex].answerIndex;
+  const answerButtons = [
+    answerOneBtn,
+    answerTwoBtn,
+    answerThreeBtn,
+    answerFourBtn,
+  ];
+
+  if (selectedAnswer === correctAnswerIndex) {
     correct++;
+    answerButtons[selectedAnswer].classList.add("correct");
+    resultText.textContent = "Correct!";
+    resultText.setAttribute("style", "color: var(--color-success);");
   } else {
     incorrect++;
+    answerButtons[selectedAnswer].classList.add("incorrect");
+    answerButtons[correctAnswerIndex].classList.add("correct");
+    resultText.textContent = "Incorrect!";
+    resultText.setAttribute("style", "color: var(--color-error);");
+  }
+
+  nextBtn.addEventListener("click", nextQuestionHandler);
+
+  if (questionIndex + 1 === questionsData.length) {
+    endQuiz();
   }
 };
 
+// Starts the timer and displays the time remaining on the page
 const timer = (startingTime) => {
   timerInterval = setInterval(function () {
     startingTime--;
@@ -208,7 +259,8 @@ const timer = (startingTime) => {
   }, 1000);
 };
 
-const endQuiz = async () => {
+// Ends the quiz and displays the score on the page
+const endQuiz = () => {
   console.log("Quiz ended");
   clearInterval(timerInterval);
   calculateScore();
@@ -225,48 +277,52 @@ const endQuiz = async () => {
   finalScoreText.textContent = `Score: ${Number(score)}`;
 
   if (newHighScore) {
+    console.log("New high score detected");
     enterName.setAttribute("style", "display: flex;");
-  
-    const promise = new Promise((resolve) => {
-      nameText.addEventListener("input", (event) => {
-        highScoreName = event.target.value;
-      });
-  
-      formSubmitBtn.addEventListener("click", () => {
-        const newScore = { name: highScoreName, score: score };
-  
-        highScoresData.splice(highScoreIndex, 0, newScore);
-  
-        if (highScoresData.length > 5) {
-          highScoresData.pop();
-        }
-  
-        localStorage.setItem("highScores", JSON.stringify(highScoresData));
-        highScoresData = JSON.parse(localStorage.getItem("highScores"));
-        resolve();
-      });
+
+    nameText.addEventListener("input", (event) => {
+      highScoreName = event.target.value;
     });
 
-    await promise;
-    nameText.value = "";
-    enterName.setAttribute("style", "display: none;");
-    scoreContainer.setAttribute("style", "display: none;");
-    startButton.setAttribute("style", "display: inline-block;");
+    formSubmitBtn.addEventListener("click", () => {
+      console.log("Submit button clicked");
+      const newScore = { name: highScoreName, score: score };
+
+      highScoresData.splice(highScoreIndex, 0, newScore);
+
+      if (highScoresData.length > 5) {
+        highScoresData.pop();
+      }
+
+      localStorage.setItem("highScores", JSON.stringify(highScoresData));
+      highScoresData = JSON.parse(localStorage.getItem("highScores"));
+      console.log("High scores updated:", highScoresData);
+
+      nameText.value = "";
+      enterName.setAttribute("style", "display: none;");
+      scoreContainer.setAttribute("style", "display: none;");
+      startButton.setAttribute("style", "display: inline-block;");
+    });
+
+    enterName.setAttribute("style", "display: flex;");
+  } else {
     showHighScores();
   }
 };
 
+// Calculates the score based on the number of correct and incorrect answers and the remaining time
 const calculateScore = () => {
   if (remainingTime < 0) {
     remainingTime = 1;
   }
-  score = (correct - (incorrect * 4)) + remainingTime;
+  score = correct - incorrect * 4 + remainingTime;
   console.log("Score:", score);
   if (score < 0) {
     score = 0;
   }
 };
 
+// Compares the score to the high scores and determines if it is a new high score
 const compareScores = () => {
   for (let i = 0; i < highScoresData.length; i++) {
     if (score > Number(highScoresData[i].score)) {
@@ -277,6 +333,7 @@ const compareScores = () => {
   }
 };
 
+// Displays the high scores on the page
 const showHighScores = () => {
   welcomeText.setAttribute("style", "display: none;");
   scoreContainer.setAttribute("style", "display: none;");
@@ -298,6 +355,7 @@ const showHighScores = () => {
   }
 };
 
+// Event Listeners
 startButton.addEventListener("click", startQuiz);
 playAgainButton.addEventListener("click", resetQuiz);
 resetButton.addEventListener("click", resetQuiz);

@@ -35,7 +35,7 @@
   --color-warning-light: #ffe54c;
 
   /* Font Family */
-  --electrolize: 'Electrolize', sans-serif;
+  --electrolize: "Electrolize", sans-serif;
 
   /* Box Shadow */
   --box-shadow: 2.7px 2.7px 2.2px rgba(0, 0, 0, 0.02),
@@ -45,6 +45,8 @@
     41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
     100px 100px 80px rgba(0, 0, 0, 0.07);
 }
+
+
 
 body {
   margin: 0;
@@ -70,6 +72,21 @@ header {
   min-height: 70px;
   max-width: 100vw;
   border-bottom: 2px solid var(--color-border-dark);
+}
+
+nav ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  max-width: 100vw;
+  flex-grow: 1;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  margin: 5px 5px;
 }
 
 .header-button-start {
@@ -171,6 +188,8 @@ main {
   flex-grow: 1;
   color: var(--color-text-dark);
   font-family: var(--electrolize);
+  padding: 10px;
+  max-width: 100vw;
 }
 
 /* Quiz Container Styles */
@@ -186,8 +205,13 @@ main {
   border: 2px solid var(--color-border-dark);
   border-radius: 5px;
   box-shadow: var(--box-shadow);
-  max-width: 999px;
-  margin: 0px 10px;
+  max-width: 90vw;
+}
+
+.text-title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #question-text,
@@ -198,8 +222,7 @@ main {
 
 #answer-form {
   flex-grow: 1;
-  margin-top: 10px;
-  padding: 10px;
+  padding-top: 0px;
 }
 
 .answer-button-container {
@@ -207,24 +230,39 @@ main {
   align-items: center;
   margin-top: 5px;
   margin-bottom: 5px;
-  border: 2px solid var(--color-border);
-  cursor: pointer;
-  border-radius: 5px;
 }
 
-.answer-button-container Label {
+.answer-one,
+.answer-two,
+.answer-three,
+.answer-four {
   flex-grow: 1;
-  padding: 10px;
   cursor: pointer;
+  text-align: left;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0px;
+  border: 2px solid var(--color-border);
+  font-family: var(--electrolize);
+  color: var(--color-text-dark);
+  background-color: var(--color-background-dark);
 }
 
-.answer-button-container:hover {
-  background-color: var(--color-background-light);
-  border: 2px solid var(--color-border-light);
+.answer-one:hover,
+.answer-two:hover,
+.answer-three:hover,
+.answer-four:hover {
+ scale: 1.02;
 }
 
-.selected {
+.correct {
   background-color: var(--color-success);
+  border: 2px solid var(--color-border-light);
+  color: black;
+}
+
+.incorrect {
+  background-color: var(--color-error);
   border: 2px solid var(--color-border-light);
   color: black;
 }
@@ -236,6 +274,20 @@ main {
     border: 2px solid var(--color-primary);
     scale: 1.1;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #form-submit:hover {
+    background-color: var(--color-background-light);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    scale: 1.1;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -247,12 +299,19 @@ main {
     scale: 1.1;
     cursor: pointer;
   }
+
+  #form-submit:active {
+    background-color: var(--color-background-light);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    scale: 1.1;
+    cursor: pointer;
+  }
 }
 
 .submit-button-container {
   display: flex;
   justify-content: center;
-  margin: 10px;
 }
 
 .submit-button {
@@ -276,7 +335,7 @@ main {
   border: 2px solid var(--color-border-dark);
   border-radius: 5px;
   box-shadow: var(--box-shadow);
-  max-width: 999px;
+  max-width: 900px;
   min-width: 300px;
   min-height: 300px;
   padding: 16px;
@@ -289,12 +348,31 @@ main {
   margin-bottom: 32px;
 }
 
+.name-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
 .name-text {
   font-size: 16px;
   margin: 10px;
   text-align: center;
   height: 32px;
   width: auto;
+}
+
+#form-submit {
+  border: 2px dashed var(--color-primary);
+  background-color: var(--color-background-dark);
+  font-family: var(--electrolize);
+  color: var(--color-primary);
+  font-size: 12px;
+  width: 100px;
+  height: 30px;
+  transition: 0.3s ease;
 }
 
 /* High Scores Styles  */
@@ -307,9 +385,9 @@ main {
   border: 2px solid var(--color-border-dark);
   border-radius: 5px;
   box-shadow: var(--box-shadow);
-  max-width: 999px;
+  max-width: 900px;
   min-width: 300px;
-  max-height: 999px;
+  max-height: 900px;
   min-height: 300px;
   margin: 0px 10px;
   padding: 16px;
@@ -356,7 +434,7 @@ footer {
   justify-content: space-between;
   font-family: var(--electrolize);
   font-size: 16px;
-  width: 100vw;
+  max-width: 100vw;
   margin-top: 10px;
   padding: 10px 0px;
   border-top: 2px solid var(--color-border-dark);
