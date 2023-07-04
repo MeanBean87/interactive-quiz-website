@@ -1,21 +1,24 @@
 # Interactive Quiz Website
 
 ## Description
+
 ![Site Landing Page](./assets/images/interactive-quiz-website.png)
 
 This interactive quiz website allows users to test their knowledge of Javascript. The questions are multiple-choice and are scored at the end to determine your score and if you are eligible for a leaderboard spot. This website utilizes both localStorage and a hosted JSON file to retrieve questions, answers and score data, which is then used in the browsers localStorage to have persistance. The website was created as a project during a bootcamp at UCB Ext. You can access the deployed website [here](https://meanbean87.github.io/interactive-quiz-website/).
 
 ## Technology Used
 
-| Technology | Badge                                                             | Documentation                                                                       |
-| ---------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Technology | Badge                                                           | Documentation                                                                    |
+| ---------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | HTML       | ![HTML](https://img.shields.io/badge/HTML-5-orange)               | [HTML Documentation](https://developer.mozilla.org/en-US/docs/Web/HTML)             |
 | CSS        | ![CSS](https://img.shields.io/badge/CSS-3-blue)                   | [CSS Documentation](https://developer.mozilla.org/en-US/docs/Web/CSS)               |
 | JavaScript | ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow) | [JavaScript Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript) |
 | Git        | ![Git](https://img.shields.io/badge/Git-2.32.0-lightgrey)         | [Git Documentation](https://git-scm.com/)                                           |
 
 ## Javascript Example
+
 This is the fetchData function that returns the questions and highScores data. It will first attempt to use localStorage and if not available will pull in information from the hosted API.
+
 ```javascript
 const fetchData = async () => {
   try {
@@ -69,7 +72,6 @@ const fetchData = async () => {
 };
 ```
 
-
 ## Learning Points
 
 Some of the key learning points from developing this website include:
@@ -84,17 +86,19 @@ Some of the key learning points from developing this website include:
 To use the Interactive Quiz Website:
 
 1. Visit the deployed site [here](https://meanbean87.github.io/interactive-quiz-website/).
-2. Hit the start button.
-3. A container will open and prompt you for the answer of your choice.
-4. Click the "Submit" button to confirm your answer.
-5. You will be presented with another question. Keep answering until time runs out or 
-    reach the end of the questions (20 Questions).
-6. Once the quiz has completed you will view your score.
-7. If eligible you will be able to enter your name to save the score, then you will view the 
-    leader board.
-8. To view high scores anytime, click the "Scores" button on the navbar.
-9. If you want to try again before the quiz completes, hit "Reset" ant any time to start the quiz over.
-
+2. Click the **Start** button.
+3. A card will open, presenting you with a question.
+4. Click on your chosen answer. The background color of the question will turn green for a
+   correct answer or red for an incorrect answer. The background color of the correct answer
+   will also be displayed in green. Text indicating "Correct" or "Incorrect" will be shown below
+   the timer.
+5. Another question will be presented to you. Continue answering until either the time runs out
+   or you reach the end of the questions (20 questions in total).
+6. Once the quiz is completed, your score will be displayed.
+7. If eligible, you will have the option to enter your name to save the score. Afterward, you can
+   view the leaderboard.
+8. To view the high scores at any time, click the **Scores** button on the navbar.
+9. If you wish to start the quiz over before it completes, click the **Reset** button at any time.
 
 ## Author Info
 
