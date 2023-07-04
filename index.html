@@ -16,9 +16,13 @@
 </head>
 
 <body>
+
+    <!-- Header -->
     <header>
         <h1>JavaScript Interactive Quiz</h1>
         <nav>
+
+            <!-- Navigation buttons -->
             <ul>
                 <li><button class="header-button-start">Start</button></li>
                 <li><button class="header-button-reset">Reset</button></li>
@@ -26,8 +30,13 @@
             </ul>
         </nav>
     </header>
+
     <main>
+
+        <!-- Landing Page Welcome Text -->
         <h2 class="welcome-text">Hit "Start" to begin!!!</h2>
+
+        <!-- Quiz Container -->
         <section class="quiz-container">
             <div class="text-title-container">
                 <h2 id="question-text">Question</h2>
@@ -36,40 +45,35 @@
             </div>
             <form id="answer-form">
                 <div class="answer-button-container">
-                    <button id="answer-one" class="answer-one">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Eaque tempora eos, autem asperiores cum quia modi ducimus quidem velit accusamus nesciunt
-                        aperiam? Quia, ipsam. Obcaecati iusto saepe laborum laboriosam accusantium.</button>
+                    <button id="answer-one" class="answer-one"></button>
                 </div>
                 <div class="answer-button-container">
-                    <button id="answer-two" class="answer-two">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Quos consectetur, qui repellendus soluta ipsa molestiae animi rerum, dolorem odio aperiam id.
-                        Laborum magni aut corrupti eligendi tenetur nemo itaque quos.</button>
+                    <button id="answer-two" class="answer-two"></button>
                 </div>
                 <div class="answer-button-container">
-                    <button id="answer-three" class="answer-three">Lorem ipsum dolor, sit amet consectetur adipisicing
-                        elit. Porro voluptatum delectus molestias in saepe dolore mollitia quae ipsa, neque debitis sint
-                        at aliquid nemo ea reprehenderit vero molestiae consequatur? Provident.</button>
+                    <button id="answer-three" class="answer-three"></button>
                 </div>
                 <div class="answer-button-container">
-                    <button id="answer-four" class="answer-four">Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Sunt eius error maxime omnis maiores magnam deserunt expedita quisquam doloribus aliquam
-                        perspiciatis deleniti enim nemo, nisi autem fugit eligendi eum soluta?</button>
+                    <button id="answer-four" class="answer-four"></button>
                 </div>
             </form>
-            <div class="submit-button-container">
-                <button class="submit-button">Next</button>
+            <div class="next-button-container">
+                <button class="next-button">Next</button>
             </div>
         </section>
+
+        <!-- Quiz Score Container -->
         <aside class="score-container">
-            <header>
-                <h2>Quiz Over</h2>
-            </header>
+            <h2>Quiz Over</h2>
+            </br>
             <h3>Your Score:</h3>
             <p class="correct-score-value"></p>
             <p class="incorrect-score-value"></p>
             <p class="remaining-time-value"></p>
             <p class="final-score-value"></p>
-            <section class="enter-name" style="display: none">
+
+            <!-- Enter-name Section -->
+            <section class="enter-name">
                 <h3>🎉🎉Congratulations!🎉🎉</h3>
                 <h4>You made it on the leaderboard!</h4>
                 <form class="name-form">
@@ -78,11 +82,13 @@
                     <button id="form-submit">Submit</button>
                 </form>
             </section>
-            <section>
-                <button id="play-again" class="header-button-start">Play Again</button>
+            <section class="retry-container">
+                <button id="retry" class="header-button-start">Retry</button>
             </section>
         </aside>
-        <aside class="high-scores-container" style="display: none">
+
+        <!-- High Scores Container -->
+        <aside class="high-scores-container">
             <h2>High Scores</h2>
             <ol class="leader-board">
                 <li class="rank-one"></li>
@@ -91,7 +97,9 @@
                 <li class="rank-four"></li>
                 <li class="rank-five"></li>
             </ol>
+            <p>Click "Start" to begin the quiz.</p>
         </aside>
+
     </main>
     <script src="./assets/javascript/script.js" async defer></script>
     <footer>
