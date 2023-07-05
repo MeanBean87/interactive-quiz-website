@@ -1,61 +1,213 @@
-// Declares the variables that will be used to store the questions and high scores data
-let questionsData;
-let highScoresData;
+// Questions and High Scores initial content.
+const questionsData = [
+  {
+    question: "What is JavaScript?",
+    options: [
+      "A programming language",
+      "A markup language",
+      "A styling language",
+      "A database query language",
+    ],
+    answerIndex: 0,
+  },
+  {
+    question: "Which of the following is not a JavaScript data type?",
+    options: ["String", "Boolean", "Number", "Float"],
+    answerIndex: 3,
+  },
+  {
+    question: "What is the purpose of the 'typeof' operator in JavaScript?",
+    options: [
+      "To check if a variable is defined",
+      "To determine the type of a value",
+      "To convert a value to a specific type",
+      "To declare a new variable",
+    ],
+    answerIndex: 1,
+  },
+  {
+    question: "What is the result of the expression '3' + 2 in JavaScript?",
+    options: ["5", "32", "7", "Undefined"],
+    answerIndex: 1,
+  },
+  {
+    question: "Which of the following is not a JavaScript framework?",
+    options: ["React", "Angular", "Vue", "Java"],
+    answerIndex: 3,
+  },
+  {
+    question: "What does the 'NaN' value represent in JavaScript?",
+    options: [
+      "Not a Null",
+      "No Answer",
+      "Not a Number",
+      "Negative Absolute Number",
+    ],
+    answerIndex: 2,
+  },
+  {
+    question: "What is the correct way to comment a single line in JavaScript?",
+    options: [
+      "// This is a comment",
+      "/* This is a comment */",
+      "<!-- This is a comment -->",
+      "# This is a comment",
+    ],
+    answerIndex: 0,
+  },
+  {
+    question:
+      "What is the output of the following code?\n\nconsole.log(typeof([]));",
+    options: ["Object", "Array", "Undefined", "String"],
+    answerIndex: 0,
+  },
+  {
+    question: "Which keyword is used to declare a variable in JavaScript?",
+    options: ["var", "let", "const", "def"],
+    answerIndex: 0,
+  },
+  {
+    question:
+      "What is the purpose of the 'querySelector' method in JavaScript?",
+    options: [
+      "To add a class to an element",
+      "To select elements using CSS selectors",
+      "To create a new HTML element",
+      "To change the style of an element",
+    ],
+    answerIndex: 1,
+  },
+  {
+    question: "Which operator is used to concatenate strings in JavaScript?",
+    options: ["+", "-", "*", "/"],
+    answerIndex: 0,
+  },
+  {
+    question:
+      "What is the output of the following code?\n\nconsole.log(2 + '2');",
+    options: ["4", "22", "NaN", "Undefined"],
+    answerIndex: 1,
+  },
+  {
+    question: "What is the purpose of the 'push' method in JavaScript arrays?",
+    options: [
+      "To remove the last element",
+      "To add elements to the beginning",
+      "To sort the array",
+      "To add elements to the end",
+    ],
+    answerIndex: 3,
+  },
+  {
+    question: "Which function is used to parse JSON in JavaScript?",
+    options: [
+      "JSON.stringify()",
+      "JSON.parse()",
+      "JSON.stringifyify()",
+      "JSON.parsify()",
+    ],
+    answerIndex: 1,
+  },
+  {
+    question: "What does the '=== ' operator do in JavaScript?",
+    options: [
+      "Compares two values for equality, allowing type coercion",
+      "Compares two values for equality, without type coercion",
+      "Assigns a value to a variable",
+      "Performs a strict comparison of two values",
+    ],
+    answerIndex: 3,
+  },
+  {
+    question:
+      "Which method is used to remove the last element from an array in JavaScript?",
+    options: ["pop()", "shift()", "unshift()", "splice()"],
+    answerIndex: 0,
+  },
+  {
+    question:
+      "What is the purpose of the 'addEventListener' method in JavaScript?",
+    options: [
+      "To create a new event",
+      "To add a listener to an event",
+      "To trigger an event",
+      "To remove an event listener",
+    ],
+    answerIndex: 1,
+  },
+  {
+    question: "Which symbol is used for single-line comments in JavaScript?",
+    options: ["//", "/* */", "<!-- -->", "##"],
+    answerIndex: 0,
+  },
+  {
+    question:
+      "What is the result of the expression 'null == undefined' in JavaScript?",
+    options: ["true", "false", "NaN", "Undefined"],
+    answerIndex: 0,
+  },
+  {
+    question:
+      "What is the purpose of the 'querySelectorAll' method in JavaScript?",
+    options: [
+      "To add multiple classes to an element",
+      "To select multiple elements using CSS selectors",
+      "To select the first matching element",
+      "To add a listener to multiple events",
+    ],
+    answerIndex: 1,
+  },
+];
+
+const highScoresData = [
+  {
+    name: "Woody Baldelson",
+    score: 4,
+  },
+  {
+    name: "Swan Ronson",
+    score: 3,
+  },
+  {
+    name: "Parah Salin",
+    score: 2,
+  },
+  {
+    name: "Ruff Markalo",
+    score: 1,
+  },
+  {
+    name: "Ellen Book",
+    score: 0,
+  },
+];
+
 let isDataFetched = false;
 
-// Fetches the questions and high scores data from the repository and stores it in localStorage
-// If the data has already been fetched, it will be used from localStorage instead of being fetched again.
 const fetchData = async () => {
   try {
     if (isDataFetched) {
+      console.log("Data already fetched.")
       return;
     }
 
-    let storedQuestions = localStorage.getItem("questions");
-    let storedHighScores = localStorage.getItem("highScores");
-
-    if (storedQuestions && storedHighScores) {
-      questionsData = JSON.parse(storedQuestions);
-      highScoresData = JSON.parse(storedHighScores);
-      console.log("Data fetched from localStorage successfully.");
-    } else {
-      const dataResponse = await fetch(
-        "https://meanbean87.github.io/interactive-quiz-website/assets/javascript/data.json"
-      );
-
-      const dataObj = await dataResponse.json();
-
-      if (localStorage.getItem("questions") === null) {
-        localStorage.setItem(
-          "questions",
-          JSON.stringify(dataObj.questionsArray)
-        );
-        storedQuestions = localStorage.getItem("questions");
-        questionsData = JSON.parse(storedQuestions);
-        console.log(
-          "Fetched 'questions' from repository and updated localStorage."
-        );
-      }
-
-      if (localStorage.getItem("highScores") === null) {
-        localStorage.setItem(
-          "highScores",
-          JSON.stringify(dataObj.highScoresArray)
-        );
-        storedHighScores = localStorage.getItem("highScores");
-        highScoresData = JSON.parse(storedHighScores);
-        console.log(
-          "Fetched 'highScores' from repository and updated localStorage."
-        );
-      }
+    if (localStorage.getItem("questions") === null) {
+      localStorage.setItem("questions", JSON.stringify(questionsData));
+      console.log("Fetched 'questions' and updated localStorage.");
     }
+
+    if (localStorage.getItem("highScores") === null) {
+      localStorage.setItem("highScores", JSON.stringify(highScoresData));
+      console.log("Fetched 'highScores' and updated localStorage.");
+    }
+
+    isDataFetched = true;
+
   } catch (error) {
     console.log("Error fetching data:", error);
   }
-  isDataFetched = true;
 };
 
-// Calls the fetchData function
 fetchData();
 
 // Selection Statements
@@ -98,7 +250,6 @@ let selectedAnswer = undefined;
 let newHighScore = false;
 let highScoreName = "";
 let highScoreIndex = -1;
-let remainingTime = 0;
 let questionIndex = 0;
 
 // Functions
@@ -132,7 +283,6 @@ const resetValues = () => {
   newHighScore = false;
   highScoreName = "";
   highScoreIndex = -1;
-  remainingTime = 0;
   questionIndex = 0;
   resultText.textContent = "";
   highScoresContainer.setAttribute("style", "display: none;");
@@ -182,7 +332,7 @@ const answerTwo = (event) => {
   disableButtons();
   selectedAnswer = 1;
   checkAnswer(selectedAnswer, questionIndex);
-}
+};
 
 const answerThree = (event) => {
   event.preventDefault();
@@ -204,7 +354,7 @@ const timer = (startingTime) => {
     startingTime--;
     let minutes = Math.floor(startingTime / 60);
     let seconds = startingTime - minutes * 60;
-    if (minutes <= 0 && seconds <= 0 || startingTime <= 0) {
+    if ((minutes <= 0 && seconds <= 0) || startingTime <= 0) {
       clearInterval(timerInterval);
       startingTime = 0;
       endQuiz();
@@ -297,6 +447,12 @@ const endQuiz = () => {
   );
   correctText.textContent = `Correct: ${correct}`;
   incorrectText.textContent = `Incorrect: ${incorrect}`;
+
+  let remainingTime = startingTime;
+  if (remainingTime <= 1) {
+    remainingTime = 0;
+  }
+
   remainingTimeText.textContent = `Remaining Time: ${Number(remainingTime)}`;
   finalScoreText.textContent = `Score: ${Number(score)}`;
 
@@ -313,7 +469,7 @@ const calculateScore = () => {
       score = 0;
     }
   } else {
-    score = correct - incorrect + remainingTime;
+    score = correct - incorrect + startingTime;
   }
 };
 
