@@ -202,19 +202,18 @@ const answerFour = (event) => {
 const timer = (startingTime) => {
   timerInterval = setInterval(function () {
     startingTime--;
-    remainingTime = startingTime;
     let minutes = Math.floor(startingTime / 60);
     let seconds = startingTime - minutes * 60;
+    if (minutes <= 0 && seconds <= 0 || startingTime <= 0) {
+      clearInterval(timerInterval);
+      startingTime = 0;
+      endQuiz();
+    }
     if (seconds < 10) {
       seconds = "0" + seconds;
     }
-
     let formattedTime = `${minutes}:${seconds}`;
     timerValue.textContent = `Time Left: ${formattedTime}`;
-    if (startingTime <= 0) {
-      clearInterval(timerInterval);
-      endQuiz();
-    }
   }, 1000);
 };
 
@@ -269,6 +268,9 @@ const checkAnswer = (selectedAnswer, questionIndex) => {
     resultText.setAttribute("style", "color: var(--color-success);");
   } else {
     incorrect++;
+    startingTime -= 30;
+    clearInterval(timerInterval);
+    timer(startingTime);
     answerButtons[selectedAnswer].classList.add("incorrect");
     answerButtons[correctAnswerIndex].classList.add("correct");
     resultText.textContent = "Incorrect!";
