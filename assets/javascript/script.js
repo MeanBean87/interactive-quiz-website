@@ -1,5 +1,5 @@
 // Questions and High Scores initial content.
-const questionsData = [
+let questionsData = [
   {
     question: "What is JavaScript?",
     options: [
@@ -159,38 +159,31 @@ const questionsData = [
   },
 ];
 
-const highScoresData = [
+let highScoresData = [
   {
     name: "Woody Baldelson",
-    score: 4,
+    score: 5,
   },
   {
     name: "Swan Ronson",
-    score: 3,
+    score: 4,
   },
   {
     name: "Parah Salin",
-    score: 2,
+    score: 3,
   },
   {
     name: "Ruff Markalo",
-    score: 1,
+    score: 2,
   },
   {
     name: "Ellen Book",
-    score: 0,
+    score: 1,
   },
 ];
 
-let isDataFetched = false;
-
 const fetchData = async () => {
   try {
-    if (isDataFetched) {
-      console.log("Data already fetched.")
-      return;
-    }
-
     if (localStorage.getItem("questions") === null) {
       localStorage.setItem("questions", JSON.stringify(questionsData));
       console.log("Fetched 'questions' and updated localStorage.");
@@ -199,10 +192,11 @@ const fetchData = async () => {
     if (localStorage.getItem("highScores") === null) {
       localStorage.setItem("highScores", JSON.stringify(highScoresData));
       console.log("Fetched 'highScores' and updated localStorage.");
+    } else {
+      highScoresData = JSON.parse(localStorage.getItem("highScores"));
     }
 
     isDataFetched = true;
-
   } catch (error) {
     console.log("Error fetching data:", error);
   }
@@ -244,32 +238,25 @@ const rankFive = document.querySelector(".rank-five");
 let correct = 0;
 let incorrect = 0;
 let score = 0;
-let startingTime = 181;
+let startingTime = 180;
+let remainingTime = 0;
 let timerInterval;
 let selectedAnswer = undefined;
 let newHighScore = false;
-let highScoreName = "";
-let highScoreIndex = -1;
+let highScoreName = "Four";
+let highScoreIndex;
 let questionIndex = 0;
-
 // Functions
 
 // Starts the quiz
 const startQuiz = () => {
   resetValues();
+  timer(startingTime);
   fetchData();
   welcomeText.innerHTML = "";
   startButton.setAttribute("style", "display: none;");
   getQuestion(questionIndex);
   quizContainer.setAttribute("style", "display: flex;");
-  timer(startingTime);
-};
-
-// Resets the quiz
-const resetQuiz = () => {
-  clearInterval(timerInterval);
-  fetchData();
-  resetValues();
 };
 
 // Sets all global variables and styles to their default values
@@ -277,14 +264,15 @@ const resetValues = () => {
   correct = 0;
   incorrect = 0;
   score = 0;
-  startingTime = 181;
-  timerInterval = null;
+  startingTime = 180;
+  remainingTime = 0;
   selectedAnswer = undefined;
   newHighScore = false;
   highScoreName = "";
-  highScoreIndex = -1;
+  highScoreIndex = null;
   questionIndex = 0;
   resultText.textContent = "";
+  storedScores = null;
   highScoresContainer.setAttribute("style", "display: none;");
   scoreContainer.setAttribute("style", "display: none;");
   enterName.setAttribute("style", "display: none;");
@@ -295,6 +283,7 @@ const resetValues = () => {
   nextBtn.removeEventListener("click", nextQuestionHandler);
   removeClassFromElements("correct");
   removeClassFromElements("incorrect");
+  clearInterval(timerInterval);
 };
 
 // Removes a class from all elements with the specified class name
@@ -348,20 +337,27 @@ const answerFour = (event) => {
   checkAnswer(selectedAnswer, questionIndex);
 };
 
-// Starts the timer and displays the time remaining on the page
+// Starts the timer and displays the formatted time remaining on the page, will end the quiz if the time runs out
 const timer = (startingTime) => {
   timerInterval = setInterval(function () {
     startingTime--;
+    if (startingTime <= 0) {
+      endQuiz();
+    }
+    remainingTime = startingTime;
     let minutes = Math.floor(startingTime / 60);
     let seconds = startingTime - minutes * 60;
+
     if ((minutes <= 0 && seconds <= 0) || startingTime <= 0) {
       clearInterval(timerInterval);
       startingTime = 0;
       endQuiz();
     }
+
     if (seconds < 10) {
       seconds = "0" + seconds;
     }
+
     let formattedTime = `${minutes}:${seconds}`;
     timerValue.textContent = `Time Left: ${formattedTime}`;
   }, 1000);
@@ -418,7 +414,7 @@ const checkAnswer = (selectedAnswer, questionIndex) => {
     resultText.setAttribute("style", "color: var(--color-success);");
   } else {
     incorrect++;
-    startingTime -= 30;
+    startingTime -= 15;
     clearInterval(timerInterval);
     timer(startingTime);
     answerButtons[selectedAnswer].classList.add("incorrect");
@@ -428,7 +424,6 @@ const checkAnswer = (selectedAnswer, questionIndex) => {
   }
 
   nextBtn.addEventListener("click", nextQuestionHandler);
-
   if (questionIndex + 1 === questionsData.length) {
     endQuiz();
   }
@@ -436,44 +431,37 @@ const checkAnswer = (selectedAnswer, questionIndex) => {
 
 // Ends the quiz and displays the score on the page
 const endQuiz = () => {
+  let remainingTime = startingTime;
   clearInterval(timerInterval);
   calculateScore();
   compareScores();
   quizContainer.setAttribute("style", "display: none;");
-  welcomeText.setAttribute("style", "display: none;");
-  scoreContainer.setAttribute(
-    "style",
-    "display: flex; flex-direction: column;"
-  );
-  correctText.textContent = `Correct: ${correct}`;
-  incorrectText.textContent = `Incorrect: ${incorrect}`;
+  scoreContainer.setAttribute("style", "display: flex");
 
-  let remainingTime = startingTime;
-  if (remainingTime <= 1) {
+  if (startingTime <= 1) {
     remainingTime = 0;
   }
 
+  correctText.textContent = `Correct: ${correct}`;
+  incorrectText.textContent = `Incorrect: ${incorrect}`;
   remainingTimeText.textContent = `Remaining Time: ${Number(remainingTime)}`;
   finalScoreText.textContent = `Score: ${Number(score)}`;
 
   if (newHighScore) {
-    addNewHighScore();
+    enterName.setAttribute("style", "display: flex;");
   }
 };
 
 // Calculates the score based on the number of correct and incorrect answers and the remaining time
 const calculateScore = () => {
-  if (correct <= incorrect) {
-    score = correct * 5;
-    if (score < 0) {
-      score = 0;
-    }
-  } else {
-    score = correct - incorrect + startingTime;
-  }
+  const maxPossibleScore = correct * 5;
+  const incorrectPenalty = incorrect * 2;
+  const timeBonus = remainingTime;
+  score = Math.max(0, maxPossibleScore - incorrectPenalty + timeBonus);
 };
 
 // Compares the score to the high scores and determines if it is a new high score
+// TODO: This is likely the cause of the problem
 const compareScores = () => {
   for (let i = 0; i < highScoresData.length; i++) {
     if (score > Number(highScoresData[i].score)) {
@@ -485,30 +473,23 @@ const compareScores = () => {
 };
 
 // Adds a new high score to the high scores array and updates localStorage
-const addNewHighScore = () => {
-  enterName.setAttribute("style", "display: flex;");
-  nameText.addEventListener("input", (event) => {
-    highScoreName = event.target.value;
-  });
+const submitHighScore = () => {
+  let storedScores = JSON.parse(localStorage.getItem("highScores"));
+  const newScore = { name: highScoreName, score: score };
 
-  formSubmitBtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    const newScore = { name: highScoreName, score: score };
+  storedScores.splice(highScoreIndex, 0, newScore);
 
-    highScoresData.splice(highScoreIndex, 0, newScore);
+  if (storedScores.length > 5) {
+    storedScores.pop();
+  }
 
-    if (highScoresData.length > 5) {
-      highScoresData.pop();
-    }
-    localStorage.setItem("highScores", JSON.stringify(highScoresData));
-    highScoresData = JSON.parse(localStorage.getItem("highScores"));
-    nameText.value = "";
-    enterName.setAttribute("style", "display: none;");
-    scoreContainer.setAttribute("style", "display: none;");
-    startButton.setAttribute("style", "display: inline-block;");
-    showHighScores();
-  });
-  enterName.setAttribute("style", "display: flex;");
+  localStorage.setItem("highScores", JSON.stringify(storedScores));
+  highScoresData = JSON.parse(localStorage.getItem("highScores"));
+  nameText.value = "";
+  scoreContainer.setAttribute("style", "display: none;");
+  enterName.setAttribute("style", "display: none;");
+  startButton.setAttribute("style", "display: inline-block;");
+  showHighScores();
 };
 
 // Displays the high scores on the page
@@ -518,8 +499,8 @@ const showHighScores = () => {
   scoreContainer.setAttribute("style", "display: none;");
   quizContainer.setAttribute("style", "display: none;");
   startButton.setAttribute("style", "display: inline-block;");
-
   highScoresContainer.setAttribute("style", "display: flex;");
+
   let scores = highScoresData;
 
   if (scores && scores.length >= 5) {
@@ -535,10 +516,10 @@ const showHighScores = () => {
   clearInterval(timerInterval);
 };
 
-// Event Listeners
+// Global Event Listeners
 startButton.addEventListener("click", startQuiz);
-playAgainButton.addEventListener("click", resetQuiz);
-resetButton.addEventListener("click", resetQuiz);
+playAgainButton.addEventListener("click", resetValues);
+resetButton.addEventListener("click", resetValues);
 scoresButton.addEventListener("click", showHighScores);
 answerOneBtn.addEventListener("mousedown", answerOne);
 answerOneBtn.addEventListener("touchstart", answerOne);
@@ -548,6 +529,16 @@ answerThreeBtn.addEventListener("mousedown", answerThree);
 answerThreeBtn.addEventListener("touchstart", answerThree);
 answerFourBtn.addEventListener("mousedown", answerFour);
 answerFourBtn.addEventListener("touchstart", answerFour);
+
+nameText.addEventListener("input", (event) => {
+  highScoreName = event.target.value;
+});
+
+formSubmitBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  submitHighScore();
+});
+
 nameText.addEventListener("input", (event) => {
   highScoreName = event.target.value;
 });

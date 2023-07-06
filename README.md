@@ -22,53 +22,22 @@ This is the fetchData function that returns the questions and highScores data. I
 ```javascript
 const fetchData = async () => {
   try {
-    if (isDataFetched) {
-      console.log("Data has already been fetched.");
-      return;
+    if (localStorage.getItem("questions") === null) {
+      localStorage.setItem("questions", JSON.stringify(questionsData));
+      console.log("Fetched 'questions' and updated localStorage.");
     }
 
-    let storedQuestions = localStorage.getItem("questions");
-    let storedHighScores = localStorage.getItem("highScores");
-
-    if (storedQuestions && storedHighScores) {
-      questionsData = JSON.parse(storedQuestions);
-      highScoresData = JSON.parse(storedHighScores);
-      console.log("Data fetched from localStorage successfully.");
+    if (localStorage.getItem("highScores") === null) {
+      localStorage.setItem("highScores", JSON.stringify(highScoresData));
+      console.log("Fetched 'highScores' and updated localStorage.");
     } else {
-      const dataResponse = await fetch(
-        "https://meanbean87.github.io/interactive-quiz-website/assets/javascript/data.json"
-      );
-
-      const dataObj = await dataResponse.json();
-
-      if (localStorage.getItem("questions") === null) {
-        localStorage.setItem(
-          "questions",
-          JSON.stringify(dataObj.questionsArray)
-        );
-        storedQuestions = localStorage.getItem("questions");
-        questionsData = JSON.parse(storedQuestions);
-        console.log(
-          "Fetched 'questions' from repository and updated localStorage."
-        );
-      }
-
-      if (localStorage.getItem("highScores") === null) {
-        localStorage.setItem(
-          "highScores",
-          JSON.stringify(dataObj.highScoresArray)
-        );
-        storedHighScores = localStorage.getItem("highScores");
-        highScoresData = JSON.parse(storedHighScores);
-        console.log(
-          "Fetched 'highScores' from repository and updated localStorage."
-        );
-      }
+      highScoresData = JSON.parse(localStorage.getItem("highScores"));
     }
+
+    isDataFetched = true;
   } catch (error) {
     console.log("Error fetching data:", error);
   }
-  isDataFetched = true;
 };
 ```
 
@@ -80,6 +49,7 @@ Some of the key learning points from developing this website include:
 - Dynamically rendering content based on user interactions.
 - Utilizing event listeners to capture user actions.
 - Managing and displaying scores.
+- Use of localStorage.
 
 ## Usage
 

@@ -345,7 +345,7 @@ nav ul li {
 
 .name-text {
   font-size: 16px;
-  margin: 10px;
+  margin: 16px;
   text-align: center;
   height: 32px;
   width: auto;
@@ -408,7 +408,7 @@ nav ul li {
   padding: 16px;
 }
 
-.high-scores-container h2 {
+.high-scores-container h3 {
   padding-bottom: 16px;
 }
 
