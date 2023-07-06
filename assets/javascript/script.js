@@ -341,14 +341,14 @@ const answerFour = (event) => {
 const timer = (startingTime) => {
   timerInterval = setInterval(function () {
     startingTime--;
-    
+
     if (startingTime <= 0) {
       clearInterval(timerInterval);
       startingTime = 0;
       remainingTime = startingTime;
       endQuiz();
     }
-    
+
     remainingTime = startingTime;
     let minutes = Math.floor(startingTime / 60);
     let seconds = startingTime - minutes * 60;
