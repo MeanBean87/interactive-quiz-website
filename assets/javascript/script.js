@@ -238,7 +238,7 @@ const rankFive = document.querySelector(".rank-five");
 let correct = 0;
 let incorrect = 0;
 let score = 0;
-let startingTime = 180;
+let startingTime = 181;
 let remainingTime = 0;
 let timerInterval;
 let selectedAnswer = undefined;
@@ -264,7 +264,7 @@ const resetValues = () => {
   correct = 0;
   incorrect = 0;
   score = 0;
-  startingTime = 180;
+  startingTime = 181;
   remainingTime = 0;
   selectedAnswer = undefined;
   newHighScore = false;
@@ -341,18 +341,17 @@ const answerFour = (event) => {
 const timer = (startingTime) => {
   timerInterval = setInterval(function () {
     startingTime--;
+    
     if (startingTime <= 0) {
+      clearInterval(timerInterval);
+      startingTime = 0;
+      remainingTime = startingTime;
       endQuiz();
     }
+    
     remainingTime = startingTime;
     let minutes = Math.floor(startingTime / 60);
     let seconds = startingTime - minutes * 60;
-
-    if ((minutes <= 0 && seconds <= 0) || startingTime <= 0) {
-      clearInterval(timerInterval);
-      startingTime = 0;
-      endQuiz();
-    }
 
     if (seconds < 10) {
       seconds = "0" + seconds;
@@ -360,6 +359,7 @@ const timer = (startingTime) => {
 
     let formattedTime = `${minutes}:${seconds}`;
     timerValue.textContent = `Time Left: ${formattedTime}`;
+    timerValue.setAttribute("style", "display: flex;");
   }, 1000);
 };
 
