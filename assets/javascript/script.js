@@ -339,6 +339,7 @@ const answerFour = (event) => {
 
 // Starts the timer and displays the formatted time remaining on the page, will end the quiz if the time runs out
 const timer = (startingTime) => {
+
   timerInterval = setInterval(function () {
     startingTime--;
 
@@ -461,7 +462,6 @@ const calculateScore = () => {
 };
 
 // Compares the score to the high scores and determines if it is a new high score
-// TODO: This is likely the cause of the problem
 const compareScores = () => {
   for (let i = 0; i < highScoresData.length; i++) {
     if (score > Number(highScoresData[i].score)) {
