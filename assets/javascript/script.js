@@ -182,7 +182,7 @@ let highScoresData = [
   },
 ];
 
-const fetchData = async () => {
+async function fetchData() {
   try {
     if (localStorage.getItem("questions") === null) {
       localStorage.setItem("questions", JSON.stringify(questionsData));
@@ -238,7 +238,7 @@ const rankFive = document.querySelector(".rank-five");
 let correct = 0;
 let incorrect = 0;
 let score = 0;
-let startingTime = 181;
+let startingTime = 180;
 let remainingTime = 0;
 let timerInterval;
 let selectedAnswer = undefined;
@@ -249,7 +249,8 @@ let questionIndex = 0;
 // Functions
 
 // Starts the quiz
-const startQuiz = () => {
+
+function startQuiz() {
   resetValues();
   timer(startingTime);
   fetchData();
@@ -257,14 +258,14 @@ const startQuiz = () => {
   startButton.setAttribute("style", "display: none;");
   getQuestion(questionIndex);
   quizContainer.setAttribute("style", "display: flex;");
-};
+}
 
 // Sets all global variables and styles to their default values
-const resetValues = () => {
+function resetValues() {
   correct = 0;
   incorrect = 0;
   score = 0;
-  startingTime = 181;
+  startingTime = 180;
   remainingTime = 0;
   selectedAnswer = undefined;
   newHighScore = false;
@@ -284,10 +285,11 @@ const resetValues = () => {
   removeClassFromElements("correct");
   removeClassFromElements("incorrect");
   clearInterval(timerInterval);
+  timerValue.textContent = "Time Left: 3:00";
 };
 
 // Removes a class from all elements with the specified class name
-const removeClassFromElements = (className) => {
+function removeClassFromElements(className) {
   const elements = document.getElementsByClassName(className);
   for (let i = 0; i < elements.length; i++) {
     elements[i].classList.remove(className);
@@ -295,7 +297,7 @@ const removeClassFromElements = (className) => {
 };
 
 // Handles the next button click event during the quiz
-const nextQuestionHandler = () => {
+function nextQuestionHandler() {
   resultText.textContent = "";
   removeClassFromElements("correct");
   removeClassFromElements("incorrect");
@@ -309,28 +311,28 @@ const nextQuestionHandler = () => {
 };
 
 // Sets the selectedAnswer variable to the index of the selected answer
-const answerOne = (event) => {
+function answerOne(event)  {
   event.preventDefault();
   disableButtons();
   selectedAnswer = 0;
   checkAnswer(selectedAnswer, questionIndex);
 };
 
-const answerTwo = (event) => {
+function answerTwo (event) {
   event.preventDefault();
   disableButtons();
   selectedAnswer = 1;
   checkAnswer(selectedAnswer, questionIndex);
 };
 
-const answerThree = (event) => {
+function answerThree(event) {
   event.preventDefault();
   disableButtons();
   selectedAnswer = 2;
   checkAnswer(selectedAnswer, questionIndex);
 };
 
-const answerFour = (event) => {
+function answerFour(event) {
   event.preventDefault();
   disableButtons();
   selectedAnswer = 3;
@@ -338,9 +340,8 @@ const answerFour = (event) => {
 };
 
 // Starts the timer and displays the formatted time remaining on the page, will end the quiz if the time runs out
-const timer = (startingTime) => {
-
-  timerInterval = setInterval(function () {
+function timer(startingTime) {
+  timerInterval = setInterval(function() {
     startingTime--;
 
     if (startingTime <= 0) {
@@ -365,7 +366,7 @@ const timer = (startingTime) => {
 };
 
 // Disables the answer buttons and sets their pointer-events style to none
-const disableButtons = () => {
+function disableButtons() {
   answerOneBtn.disabled = true;
   answerOneBtn.setAttribute("style", "pointer-events: none;");
   answerTwoBtn.disabled = true;
@@ -377,7 +378,7 @@ const disableButtons = () => {
 };
 
 // Enables the answer buttons and sets their pointer-events style to auto
-const enableButtons = () => {
+function enableButtons() {
   answerOneBtn.disabled = false;
   answerOneBtn.setAttribute("style", "pointer-events: auto;");
   answerTwoBtn.disabled = false;
@@ -389,7 +390,7 @@ const enableButtons = () => {
 };
 
 // Gets the question and answer options from the questionsData array and displays them on the page
-const getQuestion = (index) => {
+function getQuestion(index) {
   questionText.textContent = questionsData[index].question;
   answerOneBtn.textContent = questionsData[index].options[0];
   answerTwoBtn.textContent = questionsData[index].options[1];
@@ -399,7 +400,7 @@ const getQuestion = (index) => {
 };
 
 // Checks the selected answer against the correct answer and increments the correct or incorrect variables accordingly
-const checkAnswer = (selectedAnswer, questionIndex) => {
+function checkAnswer(selectedAnswer, questionIndex) {
   const correctAnswerIndex = questionsData[questionIndex].answerIndex;
   const answerButtons = [
     answerOneBtn,
@@ -431,7 +432,7 @@ const checkAnswer = (selectedAnswer, questionIndex) => {
 };
 
 // Ends the quiz and displays the score on the page
-const endQuiz = () => {
+function endQuiz() {
   let remainingTime = startingTime;
   clearInterval(timerInterval);
   calculateScore();
@@ -454,7 +455,7 @@ const endQuiz = () => {
 };
 
 // Calculates the score based on the number of correct and incorrect answers and the remaining time
-const calculateScore = () => {
+function calculateScore() {
   const maxPossibleScore = correct * 5;
   const incorrectPenalty = incorrect * 2;
   const timeBonus = remainingTime;
@@ -462,7 +463,7 @@ const calculateScore = () => {
 };
 
 // Compares the score to the high scores and determines if it is a new high score
-const compareScores = () => {
+function compareScores() {
   for (let i = 0; i < highScoresData.length; i++) {
     if (score > Number(highScoresData[i].score)) {
       newHighScore = true;
@@ -473,7 +474,7 @@ const compareScores = () => {
 };
 
 // Adds a new high score to the high scores array and updates localStorage
-const submitHighScore = () => {
+function submitHighScore() {
   let storedScores = JSON.parse(localStorage.getItem("highScores"));
   const newScore = { name: highScoreName, score: score };
 
@@ -493,7 +494,7 @@ const submitHighScore = () => {
 };
 
 // Displays the high scores on the page
-const showHighScores = () => {
+function showHighScores() {
   welcomeText.setAttribute("style", "display: none;");
   scoreContainer.setAttribute("style", "display: none;");
   scoreContainer.setAttribute("style", "display: none;");
@@ -530,15 +531,15 @@ answerThreeBtn.addEventListener("touchstart", answerThree);
 answerFourBtn.addEventListener("mousedown", answerFour);
 answerFourBtn.addEventListener("touchstart", answerFour);
 
-nameText.addEventListener("input", (event) => {
+nameText.addEventListener("input", function(event) {
   highScoreName = event.target.value;
 });
 
-formSubmitBtn.addEventListener("click", (event) => {
+formSubmitBtn.addEventListener("click", function(event) {
   event.preventDefault();
   submitHighScore();
 });
 
-nameText.addEventListener("input", (event) => {
+nameText.addEventListener("input", function(event) {
   highScoreName = event.target.value;
 });
